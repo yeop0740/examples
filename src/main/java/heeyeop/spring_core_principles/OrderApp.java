@@ -3,16 +3,16 @@ package heeyeop.spring_core_principles;
 import heeyeop.spring_core_principles.member.Grade;
 import heeyeop.spring_core_principles.member.Member;
 import heeyeop.spring_core_principles.member.MemberService;
-import heeyeop.spring_core_principles.member.MemberServiceImpl;
 import heeyeop.spring_core_principles.order.Order;
 import heeyeop.spring_core_principles.order.OrderService;
-import heeyeop.spring_core_principles.order.OrderServiceImpl;
 
 public class OrderApp {
 
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
-        OrderService orderService = new OrderServiceImpl();
+
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
+        OrderService orderService = appConfig.orderService();
 
         Long memberId = 1L;
         Member member = new Member(memberId, "memberA", Grade.VIP);
