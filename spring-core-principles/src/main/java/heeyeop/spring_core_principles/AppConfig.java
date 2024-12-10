@@ -8,22 +8,29 @@ import heeyeop.spring_core_principles.member.MemberServiceImpl;
 import heeyeop.spring_core_principles.member.MemoryMemberRepository;
 import heeyeop.spring_core_principles.order.OrderService;
 import heeyeop.spring_core_principles.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class AppConfig {
 
+    @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
     }
 
+    @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
-    private static MemberRepository memberRepository() {
+    @Bean
+    public  MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
 
-    private static DiscountPolicy discountPolicy() {
+    @Bean
+    public DiscountPolicy discountPolicy() {
         return new RateDiscountPolicy();
     }
 }
