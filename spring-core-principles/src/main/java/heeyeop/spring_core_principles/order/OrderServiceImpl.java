@@ -21,4 +21,9 @@ public class OrderServiceImpl implements OrderService {
 
         return new Order(memberId, itemName, itemPrice, discountPrice);
     }
+
+    // 싱글톤 확인을 위한 메서드 추가
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }
