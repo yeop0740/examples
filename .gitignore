@@ -41,3 +41,6 @@ out/
 .env
 **/node_modules
 **/*.log
+**/cdk.staging
+**/cdk.out
+
