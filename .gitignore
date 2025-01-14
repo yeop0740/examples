@@ -39,3 +39,4 @@ out/
 .tool-versions
 
 .env
+**/node_modules
