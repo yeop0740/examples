@@ -116,6 +116,43 @@ app.post("/purchase3", async function (req, res) {
   res.send(accountDetail);
 });
 
+/**
+ * SERIALIZABLE 격리 수준을 적용한 경우
+ */
+app.post("/purchase4", async function (req, res) {
+  const changeAmount = 1;
+  const accountId = req.body["accountId"];
+
+  const accountDetail = await prisma.$transaction(
+    async (tx) => {
+      const prevAccountDetail = await tx.accountDetail.findFirst({
+        where: { accountId },
+        orderBy: { createdAt: Prisma.SortOrder.desc },
+      });
+      if (prevAccountDetail === null) {
+        throw new Error("not found account detail");
+      }
+
+      if (prevAccountDetail.newBalance < changeAmount) {
+        throw new Error("not enough balance");
+      }
+
+      return tx.accountDetail.create({
+        data: {
+          prevBalance: prevAccountDetail.newBalance,
+          changeAmount: changeAmount,
+          newBalance: prevAccountDetail.newBalance - changeAmount,
+          accountId: accountId,
+          prevAccountDetailId: prevAccountDetail.id,
+        },
+      });
+    },
+    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
+  );
+
+  res.send(accountDetail);
+});
+
 // Run the server!
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
