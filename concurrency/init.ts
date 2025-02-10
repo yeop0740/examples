@@ -6,6 +6,8 @@ const currencyNameIdMap = {
   ["건빵"]: 1,
 };
 
+export const prisma = new PrismaClient();
+
 export async function createAccount(prisma: PrismaClient) {
   const accounts = await prisma.account.createManyAndReturn({
     data: [
@@ -61,3 +63,19 @@ async function deleteAccount(
 ) {
   return prisma.account.deleteMany({});
 }
+
+deleteAll(prisma)
+  .then(() => console.log("data cleaned"))
+  .catch((e) => {
+    console.log("data deletion failed");
+    console.log(e);
+    process.exit(1);
+  });
+
+createAccount(prisma)
+  .then(() => console.log("data injection success"))
+  .catch((e) => {
+    console.log("data injection failed");
+    console.log(e);
+    process.exit(1);
+  });
