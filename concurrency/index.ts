@@ -198,6 +198,55 @@ app.post("/purchase4", async function (req, res) {
   res.send(accountDetail);
 });
 
+/**
+ * select for update skip lock 를 적용한 경우
+ */
+app.post("/purchase4", async function (req, res) {
+  const changeAmount = 1;
+  const accountId = req.body["accountId"];
+
+  const accountDetail = await prisma.$transaction(
+    async (tx) => {
+      const prevAccountDetail = await tx.$queryRaw<AccountDetail | null>(
+        Prisma.sql`
+        select *
+        from account_detail as ad
+        where account_id = ${accountId}
+        order by created_at desc
+        limit 1
+        for update skip locked;
+        `
+      );
+      console.log(prevAccountDetail);
+      if (prevAccountDetail === null) {
+        // 없거나 실행중일 수 있다.
+        throw new Error("not found account detail");
+      }
+
+      if (prevAccountDetail.newBalance < changeAmount) {
+        throw new Error("not enough balance");
+      }
+
+      return tx.accountDetail.create({
+        data: {
+          prevBalance: prevAccountDetail.newBalance,
+          changeAmount: changeAmount,
+          newBalance: prevAccountDetail.newBalance - changeAmount,
+          accountId: accountId,
+          prevAccountDetailId: prevAccountDetail.id,
+        },
+      });
+    },
+    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
+  );
+
+  res.send(accountDetail);
+});
+
+/**
+ * redis 를 사용한 락이 있지만, 이거는 좀 공부를 하고 해야할 것 같다.
+ */
+
 // Run the server!
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
