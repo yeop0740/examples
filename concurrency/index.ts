@@ -1,11 +1,27 @@
 import { AccountDetail, Prisma, PrismaClient } from "@prisma/client";
 
 import express from "express";
+import { createAccount, deleteAll } from "./init";
+
+const prisma = new PrismaClient();
+
+try {
+  deleteAll(prisma);
+  console.log("delete success");
+} catch (e) {
+  console.log(e);
+  throw new Error("delete error");
+}
+
+createAccount(prisma)
+  .then(() => console.log("data injection success"))
+  .catch((e) => {
+    console.log("data injection failed");
+    console.log(e);
+  });
 
 const app = express();
 const port = 3000;
-
-const prisma = new PrismaClient();
 
 app.get("/", (_, res) => {
   res.send({ hello: "world" });
