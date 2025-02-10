@@ -15,7 +15,10 @@ app.get("/ping", (_, res) => {
   res.send("pong");
 });
 
-app.post("/purchase", async function (req, res) {
+/**
+ * 트랜잭션을 적용하지 않은 경우
+ */
+app.post("/purchase1", async function (req, res) {
   const changeAmount = 1;
   const accountId = req.body["accountId"];
   const prevAccountDetail = await prisma.accountDetail.findFirst({
