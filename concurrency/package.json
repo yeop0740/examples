@@ -4,7 +4,13 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev index"
+    "dev": "ts-node-dev index",
+    "build": "tsc",
+    "pm2:start": "yarn build && yarn data:clean && pm2 start ./ecosystem.config.js",
+    "pm2:stop": "pm2 stop ./ecosystem.config.js",
+    "pm2:delete": "pm2 delete ./ecosystem.config.js",
+    "pm2:exit": "yarn pm2:stop && yarn pm2:delete",
+    "data:reset": "ts-node ./init"
   },
   "author": "",
   "license": "ISC",
