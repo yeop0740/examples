@@ -153,6 +153,51 @@ app.post("/purchase4", async function (req, res) {
   res.send(accountDetail);
 });
 
+/**
+ * select for update 를 적용한 경우
+ */
+app.post("/purchase4", async function (req, res) {
+  const changeAmount = 1;
+  const accountId = req.body["accountId"];
+
+  const accountDetail = await prisma.$transaction(
+    async (tx) => {
+      const prevAccountDetail = await tx.$queryRaw<AccountDetail | null>(
+        Prisma.sql`
+        select *
+        from account_detail as ad
+        where account_id = ${accountId}
+        order by created_at desc
+        limit 1
+        for update;
+        `
+      );
+      console.log(prevAccountDetail);
+      // 타임아웃이 발생할 듯
+      if (prevAccountDetail === null) {
+        throw new Error("not found account detail");
+      }
+
+      if (prevAccountDetail.newBalance < changeAmount) {
+        throw new Error("not enough balance");
+      }
+
+      return tx.accountDetail.create({
+        data: {
+          prevBalance: prevAccountDetail.newBalance,
+          changeAmount: changeAmount,
+          newBalance: prevAccountDetail.newBalance - changeAmount,
+          accountId: accountId,
+          prevAccountDetailId: prevAccountDetail.id,
+        },
+      });
+    },
+    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
+  );
+
+  res.send(accountDetail);
+});
+
 // Run the server!
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
