@@ -1,24 +1,45 @@
-import Fastify from "fastify";
-import process from "node:process";
+import { Prisma, PrismaClient } from "@prisma/client";
 
-const fastify = Fastify({
-  logger: true,
+import express from "express";
+
+const app = express();
+const port = 3000;
+
+const prisma = new PrismaClient();
+
+app.get("/", (_, res) => {
+  res.send({ hello: "world" });
 });
 
-fastify.get("/", function (_, reply) {
-  reply.send({ hello: "world" });
+app.get("/ping", (_, res) => {
+  res.send("pong");
 });
 
-fastify.get("/ping", function (_, reply) {
-  reply.send("pong");
+app.post("/purchase", async function (req, res) {
+  const changeAmount = 1;
+  const accountId = req.body["accountId"];
+  const prevAccountDetail = await prisma.accountDetail.findFirst({
+    where: { accountId },
+    orderBy: { createdAt: Prisma.SortOrder.desc },
+  });
+  if (prevAccountDetail === null) {
+    throw new Error("not found account detail");
+  }
+
+  const accountDetail = await prisma.accountDetail.create({
+    data: {
+      prevBalance: prevAccountDetail.newBalance,
+      changeAmount: changeAmount,
+      newBalance: prevAccountDetail.newBalance - changeAmount,
+      accountId: accountId,
+      prevAccountDetailId: prevAccountDetail.id,
+    },
+  });
+
+  res.send(accountDetail);
 });
 
 // Run the server!
-fastify.listen({ port: 3000 }, function (err, address) {
-  if (err) {
-    fastify.log.error(err);
-    process.exitCode = 1;
-  }
-  // Server is now listening on ${address}
-  console.log(`server is on ${address}`);
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
