@@ -43,6 +43,7 @@ export async function deleteAll(prisma: PrismaClient) {
   await prisma.$transaction(async (tx) => {
     await deleteAccountDetail(tx);
     await deleteAccount(tx);
+    await resetSequence(tx);
   });
 }
 
@@ -62,6 +63,21 @@ async function deleteAccount(
   >
 ) {
   return prisma.account.deleteMany({});
+}
+
+async function resetSequence(prisma: Omit<
+    PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+    "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
+>) {
+  await prisma.$executeRaw(
+    Prisma.sql`alter sequence account_detail_id_seq restart with 1;`
+  )
+  await prisma.$executeRaw(
+      Prisma.sql`alter sequence users_id_seq restart with 1;`
+  )
+  await prisma.$executeRaw(
+      Prisma.sql`alter sequence account_id_seq restart with 1;`
+  )
 }
 
 deleteAll(prisma)
