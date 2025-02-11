@@ -1,5 +1,6 @@
 node_modules
 dist
 .tool-versions
-venv ## python 가상 환경
+## python 가상 환경
+venv
 __pycache__
