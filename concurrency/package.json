@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "ts-node-dev index",
     "build": "tsc",
     "pm2:start": "yarn build && yarn data:reset && pm2 start ./ecosystem.config.js",
