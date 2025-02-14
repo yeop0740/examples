@@ -36,15 +36,15 @@ model Account {
 
 model AccountDetail {
   id           Int      @id @default(autoincrement())
-  prevBalance  Int
-  changeAmount Int
-  newBalance   Int
+  prevBalance  Int      @map("prev_balance")
+  changeAmount Int      @map("change_amount")
+  newBalance   Int      @map("new_balance")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  accountId           Int
+  accountId           Int            @map("account_id")
   account             Account        @relation(fields: [accountId], references: [id])
-  prevAccountDetailId Int?           @unique
+  prevAccountDetailId Int?           @unique @map("prev_account_detail_id")
   prevAccountDetail   AccountDetail? @relation("linkedAccountDetailList", fields: [prevAccountDetailId], references: [id])
   nextAccountDetail   AccountDetail? @relation("linkedAccountDetailList")
 
