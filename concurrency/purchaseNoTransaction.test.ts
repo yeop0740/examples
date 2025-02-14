@@ -10,6 +10,15 @@ describe("purchaseNoTransaction 은", () => {
     prisma.$connect();
   });
 
+  beforeEach(async () => {
+    // 데이터베이스 정리
+    // 여기서는 AccountDetail -> Account 순으로 삭제한다. sequence 도 다음 insert 를 위해 초기화한다.
+    await prisma.accountDetail.deleteMany();
+    await prisma.account.deleteMany();
+    await prisma.$queryRaw`select setval('account_id_seq', 1, false)`;
+    await prisma.$queryRaw`select setval('account_detail_id_seq', 1, false)`;
+  });
+
   afterAll(() => {
     prisma.$disconnect();
   });
