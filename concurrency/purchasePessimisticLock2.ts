@@ -1,4 +1,6 @@
 import { AccountDetail, Prisma, PrismaClient } from "@prisma/client";
+import { CreateAccountDetailEntity } from "./CreateAccountDetailEntity";
+import { AccountDetail as DAccountDetail } from "./AccountDetail";
 
 export async function purchase(
   accountId: number,
@@ -17,24 +19,21 @@ export async function purchase(
         for update skip locked;
         `
       );
-      console.log(prevAccountDetail);
       if (prevAccountDetail === null) {
         // 없거나 실행중일 수 있다.
         throw new Error("not found account detail");
       }
 
-      if (prevAccountDetail.newBalance < changeAmount) {
-        throw new Error("not enough balance");
-      }
+      const prevDetail = new DAccountDetail(
+        prevAccountDetail.accountId,
+        prevAccountDetail.newBalance,
+        prevAccountDetail.id
+      );
+      const newDetail = prevDetail.use(changeAmount);
 
+      const createEntity = CreateAccountDetailEntity.of(prevDetail, newDetail);
       return tx.accountDetail.create({
-        data: {
-          prevBalance: prevAccountDetail.newBalance,
-          changeAmount: changeAmount,
-          newBalance: prevAccountDetail.newBalance - changeAmount,
-          accountId: accountId,
-          prevAccountDetailId: prevAccountDetail.id,
-        },
+        data: createEntity,
       });
     },
     { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted }
