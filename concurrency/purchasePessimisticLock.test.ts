@@ -104,7 +104,7 @@ describe("purchasePessimisticLock 은", () => {
     expect(lastAccountDetail?.newBalance).toBe(initBalance); // 여기서 lastAccountDetail 이 null/undefined 가 아니라는 것을 어떻게 표현할지 생각
   });
 
-  it("잔액 1 소진에 대한 구매 100회 동시 실행 시 PrismaClient 에러가 발생하여 주어진 횟수만큼 수행되지 않는다.", async () => {
+  it("잔액 1 소진에 대한 구매 100회 실행 시 100 만큼 잔액이 소진된다.", async () => {
     // given
     const initBalance = 200;
     const changeAmount = 1;
