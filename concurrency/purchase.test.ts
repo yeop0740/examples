@@ -6,6 +6,14 @@ import { purchase as purchaseNoTransaction } from "./purchaseNoTransaction";
 describe("purchaseNoTransaction 은", () => {
   const prisma = new PrismaClient();
 
+  beforeAll(() => {
+    prisma.$connect();
+  });
+
+  afterAll(() => {
+    prisma.$disconnect();
+  });
+
   it("한 번의 구매에 대해서 처음 금액에서 사용한 만큼 감소시킨 양이 account detail 에 저장된다.", async () => {
     // given
     const initBalance = 100;
@@ -90,5 +98,54 @@ describe("purchaseNoTransaction 은", () => {
     await prisma.account.deleteMany();
     await prisma.$queryRaw`select setval('account_id_seq', 1, false)`;
     await prisma.$queryRaw`select setval('account_detail_id_seq', 1, false)`;
+  });
+
+  it("잔액 1 소진에 대한 구매 100회 동시 실행 시 PrismaClient 에러가 발생하여 주어진 횟수만큼 수행되지 않는다.", async () => {
+    // given
+    const initBalance = 200;
+    const changeAmount = 1;
+    const numberOfTrials = 100;
+
+    // type 이 1인 계좌 생성(currency 의 한 종류라고 생각)
+    const newAccountEntity = new CreateAccountEntity(1);
+    const createdAccount = await prisma.account.create({
+      data: newAccountEntity,
+    });
+
+    //  기본 계좌 내역 생성(잔액이 200 만큼 있음)
+    const newAccountDetailEntity = new CreateAccountDetailEntity(
+      0,
+      0,
+      initBalance,
+      createdAccount.id
+    );
+    await prisma.accountDetail.create({
+      data: newAccountDetailEntity,
+    });
+
+    // when
+    const purchases = new Array<any>();
+    for (let i = 0; i < numberOfTrials; i++) {
+      const promise = purchaseNoTransaction(
+        createdAccount.id,
+        changeAmount,
+        prisma
+      );
+      purchases.push(promise);
+    }
+
+    // then
+    await expect(Promise.all(purchases)).rejects.toThrow(
+      Prisma.PrismaClientKnownRequestError
+    );
+
+    const lastAccountDetail = await prisma.accountDetail.findFirst({
+      where: { accountId: createdAccount.id },
+      orderBy: { createdAt: Prisma.SortOrder.desc },
+    });
+    // 몇 회 수행되는지에 대해 비결정적이라서 아래처럼 일치하지 않을 것이라고 단언하는게 애매(어떤 운에 작용에 의해 모두 성공할 수 있는 가능성이 0이 아님)
+    expect(lastAccountDetail?.newBalance).not.toBe(
+      initBalance - numberOfTrials * changeAmount
+    );
   });
 });
