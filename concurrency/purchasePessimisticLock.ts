@@ -1,4 +1,4 @@
-import { AccountDetail, Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { CreateAccountDetailEntity } from "./CreateAccountDetailEntity";
 import { AccountDetail as DAccountDetail } from "./AccountDetail";
 
@@ -9,7 +9,18 @@ export async function purchase(
 ) {
   await prisma.$transaction(
     async (tx) => {
-      const prevAccountDetail = await tx.$queryRaw<AccountDetail | null>(
+      const [prevAccountDetail] = await tx.$queryRaw<
+        {
+          id: number;
+          created_at: Date;
+          updated_at: Date;
+          prev_account_detail_id: number;
+          account_id: number;
+          change_amount: number;
+          new_balance: number;
+          prev_balance: number;
+        }[]
+      >(
         Prisma.sql`
           select *
           from account_detail as ad
@@ -25,8 +36,8 @@ export async function purchase(
       }
 
       const prevDetail = new DAccountDetail(
-        prevAccountDetail.accountId,
-        prevAccountDetail.newBalance,
+        prevAccountDetail.account_id,
+        prevAccountDetail.new_balance,
         prevAccountDetail.id
       );
       const newDetail = prevDetail.use(changeAmount);
