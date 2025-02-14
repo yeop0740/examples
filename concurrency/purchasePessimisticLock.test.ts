@@ -99,4 +99,55 @@ describe("purchasePessimisticLock 은", () => {
     await prisma.$queryRaw`select setval('account_id_seq', 1, false)`;
     await prisma.$queryRaw`select setval('account_detail_id_seq', 1, false)`;
   });
+
+  it("잔액 1 소진에 대한 구매 100회 동시 실행 시 PrismaClient 에러가 발생하여 주어진 횟수만큼 수행되지 않는다.", async () => {
+    // given
+    const initBalance = 200;
+    const changeAmount = 1;
+    const numberOfTrials = 100;
+
+    // type 이 1인 계좌 생성(currency 의 한 종류라고 생각)
+    const newAccountEntity = new CreateAccountEntity(1);
+    const createdAccount = await prisma.account.create({
+      data: newAccountEntity,
+    });
+
+    //  기본 계좌 내역 생성(잔액이 200 만큼 있음)
+    const newAccountDetailEntity = new CreateAccountDetailEntity(
+      0,
+      0,
+      initBalance,
+      createdAccount.id
+    );
+    await prisma.accountDetail.create({
+      data: newAccountDetailEntity,
+    });
+
+    // when
+    const purchases = new Array<any>();
+    for (let i = 0; i < numberOfTrials; i++) {
+      const promise = purchasePessimisticLock(
+        createdAccount.id,
+        changeAmount,
+        prisma
+      );
+      purchases.push(promise);
+    }
+    await Promise.all(purchases);
+
+    // then
+    const lastAccountDetail = await prisma.accountDetail.findFirst({
+      where: { accountId: createdAccount.id },
+      orderBy: { createdAt: Prisma.SortOrder.desc },
+    });
+    expect(lastAccountDetail).toBeDefined();
+    expect(lastAccountDetail?.newBalance).toBe(
+      initBalance - numberOfTrials * changeAmount
+    );
+
+    await prisma.accountDetail.deleteMany();
+    await prisma.account.deleteMany();
+    await prisma.$queryRaw`select setval('account_id_seq', 1, false)`;
+    await prisma.$queryRaw`select setval('account_detail_id_seq', 1, false)`;
+  });
 });
