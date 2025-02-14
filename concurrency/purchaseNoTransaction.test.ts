@@ -147,5 +147,10 @@ describe("purchaseNoTransaction 은", () => {
     expect(lastAccountDetail?.newBalance).not.toBe(
       initBalance - numberOfTrials * changeAmount
     );
+
+    await prisma.accountDetail.deleteMany();
+    await prisma.account.deleteMany();
+    await prisma.$queryRaw`select setval('account_id_seq', 1, false)`;
+    await prisma.$queryRaw`select setval('account_detail_id_seq', 1, false)`;
   });
 });
