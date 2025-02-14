@@ -1,3 +1,4 @@
+import { Account } from "@prisma/client";
 import { AccountDetail } from "./AccountDetail";
 
 export class CreateAccountDetailEntity {
@@ -5,20 +6,20 @@ export class CreateAccountDetailEntity {
   changeAmount: number;
   newBalance: number;
   accountId: number;
-  prevAccountDetailId: number;
+  prevAccountDetailId: number | null;
 
   constructor(
     prevBalance: number,
     changeAmount: number,
     newBalance: number,
     accountId: number,
-    prevAccountDetailId: number
+    prevAccountDetailId?: number | null
   ) {
     this.prevBalance = prevBalance;
     this.changeAmount = changeAmount;
     this.newBalance = newBalance;
     this.accountId = accountId;
-    this.prevAccountDetailId = prevAccountDetailId;
+    this.prevAccountDetailId = prevAccountDetailId ?? null;
   }
 
   static of(prevAccountDetail: AccountDetail, newAccountDetail: AccountDetail) {
@@ -33,5 +34,9 @@ export class CreateAccountDetailEntity {
       newAccountDetail.accountId,
       prevAccountDetail.id
     );
+  }
+
+  static defaultValue(account: Account) {
+    return new CreateAccountDetailEntity(0, 0, 0, account.id);
   }
 }
