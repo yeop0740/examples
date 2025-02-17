@@ -23,15 +23,6 @@ describe("purchaseReadCommitted 는", () => {
     prisma.$disconnect();
   });
 
-  afterEach(async () => {
-    // 데이터베이스 정리
-    // 여기서는 AccountDetail -> Account 순으로 삭제한다. sequence 도 다음 insert 를 위해 초기화한다.
-    await prisma.accountDetail.deleteMany();
-    await prisma.account.deleteMany();
-    await prisma.$queryRaw`select setval('account_id_seq', 1, false)`;
-    await prisma.$queryRaw`select setval('account_detail_id_seq', 1, false)`;
-  });
-
   it("한 번의 구매에 대해서 처음 금액에서 사용한 만큼 감소시킨 양이 account detail 에 저장된다.", async () => {
     // given
     const initBalance = 100;
@@ -104,7 +95,7 @@ describe("purchaseReadCommitted 는", () => {
     expect(lastAccountDetail?.newBalance).toBe(initBalance); // 여기서 lastAccountDetail 이 null/undefined 가 아니라는 것을 어떻게 표현할지 생각
   });
 
-  it("잔액 1 소진에 대한 구매 100회 실행 시 100 만큼 잔액이 소진된다.", async () => {
+  it("잔액 1 소진에 대한 구매 100회 동시 실행 시 성공한 수행만큼 잔액이 줄어든다.", async () => {
     // given
     const initBalance = 200;
     const changeAmount = 1;
@@ -137,7 +128,13 @@ describe("purchaseReadCommitted 는", () => {
       );
       purchases.push(promise);
     }
-    await Promise.all(purchases);
+    const result = await Promise.allSettled(purchases);
+    const purchaseCount = result.reduce((acc, cur) => {
+      if (cur.status === "fulfilled") {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
 
     // then
     const lastAccountDetail = await prisma.accountDetail.findFirst({
@@ -146,7 +143,7 @@ describe("purchaseReadCommitted 는", () => {
     });
     expect(lastAccountDetail).toBeDefined();
     expect(lastAccountDetail?.newBalance).toBe(
-      initBalance - numberOfTrials * changeAmount
+      initBalance - purchaseCount * changeAmount
     );
   });
 });

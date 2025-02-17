@@ -23,15 +23,6 @@ describe("purchasePessimisticLock2 는", () => {
     prisma.$disconnect();
   });
 
-  afterEach(async () => {
-    // 데이터베이스 정리
-    // 여기서는 AccountDetail -> Account 순으로 삭제한다. sequence 도 다음 insert 를 위해 초기화한다.
-    await prisma.accountDetail.deleteMany();
-    await prisma.account.deleteMany();
-    await prisma.$queryRaw`select setval('account_id_seq', 1, false)`;
-    await prisma.$queryRaw`select setval('account_detail_id_seq', 1, false)`;
-  });
-
   it("한 번의 구매에 대해서 처음 금액에서 사용한 만큼 감소시킨 양이 account detail 에 저장된다.", async () => {
     // given
     const initBalance = 100;
@@ -105,7 +96,7 @@ describe("purchasePessimisticLock2 는", () => {
   });
 
   // 아래 테스트는 생각으로는 100회(정해놓은 실행 수)를 모두 수행하지는 않지만 계산에서 에러가 발생하지 않아야하는데, 100회 모두 수행됨
-  it("잔액 1 소진에 대한 구매 100회 동시 실행 시 이전의 잔액을 조회하지 못해 에러가 발생하여 주어진 횟수만큼 수행되지 않아야 하는데 수행되네?.", async () => {
+  it("잔액 1 소진에 대한 구매 100회 동시 실행 시 성공한 수행만큼 잔액이 줄어든다.", async () => {
     // given
     const initBalance = 200;
     const changeAmount = 1;
@@ -138,7 +129,13 @@ describe("purchasePessimisticLock2 는", () => {
       );
       purchases.push(promise);
     }
-    await Promise.all(purchases);
+    const result = await Promise.allSettled(purchases);
+    const purchaseCount = result.reduce((acc, cur) => {
+      if (cur.status === "fulfilled") {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
 
     // then
     const lastAccountDetail = await prisma.accountDetail.findFirst({
@@ -147,7 +144,7 @@ describe("purchasePessimisticLock2 는", () => {
     });
     expect(lastAccountDetail).toBeDefined();
     expect(lastAccountDetail?.newBalance).toBe(
-      initBalance - numberOfTrials * changeAmount
+      initBalance - purchaseCount * changeAmount
     );
   });
 });

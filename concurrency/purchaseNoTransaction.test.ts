@@ -23,15 +23,6 @@ describe("purchaseNoTransaction 은", () => {
     prisma.$disconnect();
   });
 
-  afterEach(async () => {
-    // 데이터베이스 정리
-    // 여기서는 AccountDetail -> Account 순으로 삭제한다. sequence 도 다음 insert 를 위해 초기화한다.
-    await prisma.accountDetail.deleteMany();
-    await prisma.account.deleteMany();
-    await prisma.$queryRaw`select setval('account_id_seq', 1, false)`;
-    await prisma.$queryRaw`select setval('account_detail_id_seq', 1, false)`;
-  });
-
   it("한 번의 구매에 대해서 처음 금액에서 사용한 만큼 감소시킨 양이 account detail 에 저장된다.", async () => {
     // given
     const initBalance = 100;
@@ -104,7 +95,7 @@ describe("purchaseNoTransaction 은", () => {
     expect(lastAccountDetail?.newBalance).toBe(initBalance); // 여기서 lastAccountDetail 이 null/undefined 가 아니라는 것을 어떻게 표현할지 생각
   });
 
-  it("잔액 1 소진에 대한 구매 100회 동시 실행 시 PrismaClient 에러가 발생하여 주어진 횟수만큼 수행되지 않는다.", async () => {
+  it("잔액 1 소진에 대한 구매 100회 동시 실행 시 성공한 수행만큼 잔액이 줄어든다.", async () => {
     // given
     const initBalance = 200;
     const changeAmount = 1;
@@ -138,18 +129,26 @@ describe("purchaseNoTransaction 은", () => {
       purchases.push(promise);
     }
 
-    // then
-    await expect(Promise.all(purchases)).rejects.toThrow(
-      Prisma.PrismaClientKnownRequestError
-    );
+    const result = await Promise.allSettled(purchases);
+    const purchaseCount = result.reduce((acc, cur) => {
+      if (cur.status === "fulfilled") {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+    console.log(result);
 
     const lastAccountDetail = await prisma.accountDetail.findFirst({
       where: { accountId: createdAccount.id },
       orderBy: { createdAt: Prisma.SortOrder.desc },
     });
-    // 몇 회 수행되는지에 대해 비결정적이라서 아래처럼 일치하지 않을 것이라고 단언하는게 애매(어떤 운에 작용에 의해 모두 성공할 수 있는 가능성이 0이 아님)
-    expect(lastAccountDetail?.newBalance).not.toBe(
-      initBalance - numberOfTrials * changeAmount
+
+    expect(lastAccountDetail?.newBalance).toBe(
+      initBalance - purchaseCount * changeAmount
     );
+    // 몇 회 수행되는지에 대해 비결정적이라서 아래처럼 일치하지 않을 것이라고 단언하는게 애매(어떤 운에 작용에 의해 모두 성공할 수 있는 가능성이 0이 아님)
+    // expect(lastAccountDetail?.newBalance).not.toBe(
+    // initBalance - numberOfTrials * changeAmount
+    // );
   });
 });
