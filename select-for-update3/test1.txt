@@ -1,0 +1,936 @@
+yarn run v1.22.22
+$ jest --runInBand
+ 
+prisma:query DELETE FROM "public"."account_detail" WHERE 1=1
+
+ 
+
+ 
+prisma:query DELETE FROM "public"."account" WHERE 1=1
+
+ 
+
+ 
+prisma:query select setval('account_id_seq', 1, false)
+
+ 
+
+ 
+prisma:query select setval('account_detail_id_seq', 1, false)
+
+ 
+
+ 
+prisma:query BEGIN
+
+ 
+
+ 
+prisma:query INSERT INTO "public"."account" ("type","created_at","updated_at") VALUES ($1,$2,$3) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+ 
+
+ 
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query SELECT "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id" FROM "public"."account_detail" WHERE "public"."account_detail"."account_id" = $1 ORDER BY "public"."account_detail"."created_at" DESC LIMIT $2 OFFSET $3
+
+
+
+
+prisma:query DELETE FROM "public"."account_detail" WHERE 1=1
+
+
+
+
+prisma:query DELETE FROM "public"."account" WHERE 1=1
+
+
+
+
+prisma:query select setval('account_id_seq', 1, false)
+
+
+
+
+prisma:query select setval('account_detail_id_seq', 1, false)
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query INSERT INTO "public"."account" ("type","created_at","updated_at") VALUES ($1,$2,$3) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query ROLLBACK
+
+
+
+
+prisma:query SELECT "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id" FROM "public"."account_detail" WHERE "public"."account_detail"."account_id" = $1 ORDER BY "public"."account_detail"."created_at" DESC LIMIT $2 OFFSET $3
+
+
+
+
+prisma:query DELETE FROM "public"."account_detail" WHERE 1=1
+
+
+
+
+prisma:query DELETE FROM "public"."account" WHERE 1=1
+
+
+
+
+prisma:query select setval('account_id_seq', 1, false)
+
+
+
+
+prisma:query select setval('account_detail_id_seq', 1, false)
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query INSERT INTO "public"."account" ("type","created_at","updated_at") VALUES ($1,$2,$3) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query ROLLBACK
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query BEGIN
+
+
+
+
+prisma:query SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query ROLLBACK
+
+
+
+
+prisma:query ROLLBACK
+
+
+
+
+prisma:query ROLLBACK
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+
+
+
+
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+
+
+
+
+prisma:query COMMIT
+
+
+
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+
+
+
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+prisma:query COMMIT
+
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+prisma:query COMMIT
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+prisma:query COMMIT
+
+prisma:query 
+          select ad.*
+          from account_detail as ad
+          where id = (select last_account_detail_id from account where id = $1)
+          for update;
+prisma:query INSERT INTO "public"."account_detail" ("prev_balance","change_amount","new_balance","created_at","updated_at","account_id") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id"
+prisma:query UPDATE "public"."account" SET "last_account_detail_id" = $1, "updated_at" = $2 WHERE ("public"."account"."id" = $3 AND 1=1) RETURNING "public"."account"."id", "public"."account"."type", "public"."account"."created_at", "public"."account"."updated_at", "public"."account"."last_account_detail_id"
+prisma:query COMMIT
+prisma:query SELECT "public"."account_detail"."id", "public"."account_detail"."prev_balance", "public"."account_detail"."change_amount", "public"."account_detail"."new_balance", "public"."account_detail"."created_at", "public"."account_detail"."updated_at", "public"."account_detail"."account_id" FROM "public"."account_detail" WHERE "public"."account_detail"."account_id" = $1 ORDER BY "public"."account_detail"."created_at" DESC LIMIT $2 OFFSET $3
+
+
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
