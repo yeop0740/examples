@@ -1,0 +1,10 @@
+{
+  "name": "lambda-edge-image-resize",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-cdk": "^2.1004.0",
+    "typescript": "^5.8.2"
+  }
+}
