@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    networks:
+      - local-network
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=postgres
+    volumes:
+      - "./data/:/docker-entrypoint-initdb.d"
+
+networks:
+  local-network:
+    driver: bridge
