@@ -2,14 +2,17 @@ import {Money} from "./money";
 import {OrderLine} from "./order-line";
 import {OrderState} from "./order-status.enum";
 import {ShippingInfo} from "./shipping-info";
+import {OrderNumber} from "./order-number";
 
 export class Order {
+    #orderNumber: OrderNumber;
     #orderLines: OrderLine[];
     #shippingInfo: ShippingInfo;
     #state: OrderState;
     #totalAmounts: Money;
 
-    constructor(orderLines: OrderLine[], shippingInfo: ShippingInfo) {
+    constructor(orderNumber: OrderNumber, orderLines: OrderLine[], shippingInfo: ShippingInfo) {
+        this.#orderNumber = orderNumber;
         this.#verifyAtLeastOneOrMoreOrderLines(orderLines);
         this.#orderLines = orderLines;
         // shipping info 가 null 인 경우는 없는지
@@ -37,6 +40,7 @@ export class Order {
 
     changeShippingInfo(newShipping: ShippingInfo) {
         this.#verifyNotYetShipped();
+        // null case 체크해야하나?
         this.#shippingInfo = newShipping;
     }
 
