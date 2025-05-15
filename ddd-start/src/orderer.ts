@@ -1,9 +1,13 @@
-export class Orderer {
-    #name: string;
-    #email: string;
+import {Member} from "./member";
 
-    constructor(name: string, email: string) {
-        this.#name = name;
-        this.#email = email;
+export class Orderer {
+    #member: Member;
+
+    constructor(member: Member) {
+        this.#member = member;
+    }
+
+    get member() {
+        return this.#member;
     }
 }

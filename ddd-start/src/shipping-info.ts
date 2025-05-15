@@ -14,4 +14,8 @@ export class ShippingInfo {
         this.#receiver = receiver;
         this.#address = address;
     }
+
+    get address() {
+        return this.#address;
+    }
 }
