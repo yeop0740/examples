@@ -1,13 +1,13 @@
-import {Member} from "./member";
+import { Member } from './member';
 
 export class Orderer {
-    #member: Member;
+	#member: Member;
 
-    constructor(member: Member) {
-        this.#member = member;
-    }
+	constructor(member: Member) {
+		this.#member = member;
+	}
 
-    get member() {
-        return this.#member;
-    }
+	get member() {
+		return this.#member;
+	}
 }

@@ -1,7 +1,7 @@
-import {PrismaClient} from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 export class PrismaService extends PrismaClient {
-    constructor() {
-        super()
-    }
+	constructor() {
+		super();
+	}
 }

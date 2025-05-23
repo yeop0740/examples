@@ -1,10 +1,9 @@
-import { Product } from "../../product";
+import { Product } from '../../product';
 
 export class ProductEntity {
-    constructor() {}
+	constructor() {}
 
-    static from(product: Product) {
-        return new ProductEntity()
-    }
+	static from(product: Product) {
+		return new ProductEntity();
+	}
 }
-

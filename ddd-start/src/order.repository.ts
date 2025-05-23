@@ -1,12 +1,22 @@
-import {Order} from "./order";
-import {OrderNumber} from "./order-number";
+import { Order } from './order';
+import { OrderNumber } from './order-number';
 
 export interface OrderRepository {
-    findByNumber(number: OrderNumber): Order;
-    save(order: Order): void;
-    delete(order: Order): void;
+	findById(orderId: number): Order;
 
-    findById(orderId: number): Order;
+	findByNumber(number: OrderNumber): Order;
 
-    findAllByOrderer(ordererId: number): Order[];
+	findAllByOrderer(ordererId: number): Order[];
+
+	findAllByOrdererId(
+		ordererId: number,
+		startRow: number,
+		size: number,
+	): Order[];
+
+	save(order: Order): void;
+
+	update(order: Order): void;
+
+	delete(order: Order): void;
 }

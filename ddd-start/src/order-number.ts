@@ -1,7 +1,11 @@
 export class OrderNumber {
-    #orderNumber: number;
+	#orderNumber: number;
 
-    constructor(orderNumber: number) {
-        this.#orderNumber = orderNumber;
-    }
+	constructor(orderNumber: number) {
+		this.#orderNumber = orderNumber;
+	}
+
+	get orderNumber() {
+		return this.#orderNumber;
+	}
 }

@@ -1,5 +1,5 @@
-import {OrderView} from "../presentation/dto/order-view.dto";
+import { OrderView } from '../presentation/dto/order-view.dto';
 
 export interface OrderViewDao {
-    selectByOrderer(ordererId: number): OrderView[];
+	selectByOrderer(ordererId: number): OrderView[];
 }
