@@ -1,0 +1,41 @@
+service: serverless-framework-examples
+frameworkVersion: '3'
+
+plugins:
+  - serverless-dotenv-plugin
+
+useDotenv: true
+
+package:
+  patterns:
+    - '!node_modules/**'
+
+provider:
+  name: aws
+  region: ap-northeast-2
+  stage: dev
+  runtime: nodejs20.x
+  httpApi:
+    cors: true
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:PutObject'
+        - 's3:GetObject'
+      Resource:
+        - 'arn:aws:s3:::*/*'
+    - Effect: Allow
+      Action:
+        - 'lambda:GetFunction'
+      Resource:
+        - 'arn:aws:lambda:${aws:region}:${aws:accountId}:function/*'
+    - Effect: Allow
+      Action:
+        - 'application-autoscaling:DescribeScalableTargets'
+        - 'application-autoscaling:PutScheduledAction'
+      Resource:
+        - 'arn:aws:application-autoscaling:${aws:region}:${aws:accountId}:scalable-target/*'
+
+functions:
+  test:
+    handler: index.handler
