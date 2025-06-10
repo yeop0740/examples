@@ -112,10 +112,17 @@ describe("purchaseSerializable 은", () => {
       0,
       0,
       initBalance,
-      createdAccount.id
+      createdAccount.id,
+      null
     );
     await prisma.accountDetail.create({
-      data: newAccountDetailEntity,
+      data: {
+        prevBalance: newAccountDetailEntity.prevBalance,
+        changeAmount: newAccountDetailEntity.changeAmount,
+        newBalance: newAccountDetailEntity.newBalance,
+        accountId: newAccountDetailEntity.accountId,
+        prevAccountDetailId: null,
+      },
     });
 
     // when
