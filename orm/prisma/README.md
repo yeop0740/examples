@@ -11,6 +11,13 @@ prisma:error
     Transaction API error: Transaction already closed: A query cannot be executed on an expired transaction. The timeout for this transaction was 5000 ms, however 6023 ms passed since the start of the transaction. Consider increasing the interactive transaction timeout or doing less work in the transaction.
 ```
 
+### 테스트 조건
+
+- `maxWait` : 2000ms
+- `timeout` : 5000ms
+- `pool_timeout` : 10000ms
+- `connection_limit` : 3
+
 ### test1-1
 
 단순히 오래 걸리는 하나의 연산
@@ -25,7 +32,8 @@ it("[test1-1]", async () => {
 }, 1000000);
 ```
 
-![[./image/Pasted image 20250621214432.png | 500]]
+
+![테스트1-1](https://github.com/yeop0740/examples/blob/prisma-transaction-api/orm/prisma/image/Pasted%20image%2020250621214432.png)
 
 `timeout` 보다 더 오래 걸리는 쿼리를 단순히 하나 실행합니다. 에러는 발생하지 않습니다.
 
@@ -43,7 +51,7 @@ it("[test1-2]", async () => {
 }, 1000000);
 ```
 
-![[./image/Pasted image 20250621214508.png | 500]]
+![테스트1-2](https://github.com/yeop0740/examples/blob/prisma-transaction-api/orm/prisma/image/Pasted%20image%2020250621214508.png)
 
 테스트 1 - 1 과 동일한 상황입니다. 명시적으로 transaction api 를 사용한 점이 차이입니다. 이때 에러는 발생하지 않습니다.
 
@@ -63,7 +71,7 @@ it("[test1-3]", async () => {
 }, 1000000);
 ```
 
-![[./image/Pasted image 20250621214547.png | 500]]
+![테스트1-3](https://github.com/yeop0740/examples/blob/prisma-transaction-api/orm/prisma/image/Pasted%20image%2020250621214547.png)
 
 테스트 1 - 1, 1 - 2 와 동일한 상황이며, 명시적으로 interactive transaction api 를 사용한 점이 차이입니다. 이때 아래의 에러가 발생합니다. 실제 production 에서 발생한 에러와 거의 동일한 것을 알 수 있습니다.
 
@@ -95,7 +103,7 @@ it("[test1-6]).", async () => {
 }, 1000000);
 ```
 
-![[./image/Pasted image 20250621214633.png | 500]]
+![테스트1-4](https://github.com/yeop0740/examples/blob/prisma-transaction-api/orm/prisma/image/Pasted%20image%2020250621214633.png)
 
 테스트 1 - 1, 1 - 2, 1 - 3 과 동일한 상황이며, interactive transaction api 에서 transaction client 를 참조하는 변수 명, prisma client 명을 변경하여 동일한 테스트를 수행해 보았습니다. 동일한 에러, 로그가 발생하는 것을 확인할 수 있습니다.
 
@@ -137,6 +145,8 @@ it("[test1-8]", async () => {
   await expect(twoLongTaskWithInteractiveTransaction(prisma, 3)).rejects.toThrow('Invalid `prisma.$executeRaw()` invocation:\n\n\nTransaction API error: Transaction already closed: A query cannot be executed on an expired transaction.');
 }, 1000000);
 ```
+
+### TODO
 
 - [ ] sleep 쿼리를 사용하기 위해 native query 를 실행하는 api 를 사용했는데, 실제로 prisma 에서 제공하는 api 를 사용해도 동일한 에러가 발생 확인
 - [ ] 롤백이 잘 수행되는지 확인 필요
