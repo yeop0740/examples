@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "docker compose up -d && npx prisma generate && jest --runInBand && docker compose down"
+    "test": "docker compose up -d && npx prisma generate && jest --runInBand && docker compose down -v"
   },
   "keywords": [],
   "author": "",
