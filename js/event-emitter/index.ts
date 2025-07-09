@@ -1,11 +1,11 @@
 import express, { type Request, type Response } from 'express'
 import { eventEmitter } from './event-bus'
-import { Client } from 'pg'
+// import { Client } from 'pg'
 
 const app = express()
 const port = 3001
 
-const client = new Client()
+// const client = new Client()
 // await client.connect()
 
 // const res = await client.query('SELECT $1::text as message', ['Hello world!'])
@@ -15,7 +15,7 @@ app.get('/', (req: Request, res: Response) => {
 	res.send('Hello World!')
 })
 
-app.get('/event', (req: Request, res: Response) => {
+app.post('/event', (req: Request, res: Response) => {
 	eventEmitter.emit('POST_CREATED', 'Hello World!')
 	res.send('Event emitted')
 })
@@ -29,7 +29,7 @@ const gracefulShutdown = () => {
 	server.close(async () => {
 		console.log('Closed out remaining connections.')
 		// 여기에 데이터베이스 연결 종료 등 리소스 정리 코드를 추가할 수 있습니다.
-		await client.end()
+		// await client.end()
 		process.exit(0)
 	})
 
