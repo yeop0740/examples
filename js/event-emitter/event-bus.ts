@@ -3,7 +3,7 @@ import { EventEmitter } from 'node:events'
 
 export const eventEmitter = new EventEmitter()
 const prisma = new PrismaClient({
-	log: ['query']
+	log: ['query'],
 })
 
 eventEmitter.on('POST_CREATED', async (data) => {
