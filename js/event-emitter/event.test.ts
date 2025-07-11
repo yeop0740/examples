@@ -11,12 +11,13 @@ describe('Event API', () => {
 		for (let i = 0; i < 6; i++) {
 			promises.push(axios.post('http://localhost:3001/event'))
 		}
-
+		console.time('start')
 		const responses = await Promise.all(promises)
 		console.dir(
 			responses.map((response) => response.data),
 			{ depth: null },
 		)
+		console.timeEnd('start')
 
 		for (const response of responses) {
 			expect(response.status).toBe(200)
