@@ -4,7 +4,9 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "jest",
-		"format": "npx biome format --write ."
+		"test:integration": " jest --runInBand",
+		"format": "npx biome format --write .",
+		"dev": "docker compose up -d --wait && npx prisma db push && npx ts-node main.ts; docker compose down -v"
 	},
 	"keywords": [],
 	"author": "",
