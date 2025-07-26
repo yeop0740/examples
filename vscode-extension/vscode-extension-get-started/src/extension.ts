@@ -22,6 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
 			'toolbox',
 			'Visual Studio Toolbox Extension',
 			vscode.ViewColumn.One,
+			{enableScripts: true},
 		);
 
 		panel.webview.html = getWebViewContent();
@@ -35,10 +36,17 @@ function getWebViewContent() {
 	<html lang="en">
 		<head>
 			<title></title>
+			<script>
+				const vscode = acquireVsCodeApi();
+				document.addEventListner('DOMContentLoaded', function() {
+					const p1 = document.getElementById('p1');
+					p1.style.color = 'yellow';
+				});
+			</script>
 		</head>
 		<body>
-			<h1>Visual Studio Code</ht>
-			<p>Visual Studio Toolbox Extension</p>
+			<h1>Visual Studio Code</h1>
+			<p id='p1'>Visual Studio Toolbox Extension</p>
 		</body>
 	</html>`;
 }
