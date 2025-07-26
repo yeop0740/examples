@@ -26,19 +26,27 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 
 		panel.webview.html = getWebViewContent();
+
+		panel.webview.onDidReceiveMessage(message => {
+			switch(message.command) {
+				case 'alert':
+					vscode.window.showInformationMessage(message.text);
+					return;
+			}
+		});
 	});
 
 	context.subscriptions.push(disposable);
 }
 
 function getWebViewContent() {
-	return `<!DOCKTYPE html>
+	return `<!DOCTYPE html>
 	<html lang="en">
 		<head>
 			<title></title>
 			<script>
 				const vscode = acquireVsCodeApi();
-				document.addEventListner('DOMContentLoaded', function() {
+				document.addEventListener('DOMContentLoaded', function() {
 					const p1 = document.getElementById('p1');
 					p1.style.color = 'yellow';
 				});
@@ -47,6 +55,7 @@ function getWebViewContent() {
 		<body>
 			<h1>Visual Studio Code</h1>
 			<p id='p1'>Visual Studio Toolbox Extension</p>
+			<button onclick="vscode.postMessage({command: 'alert', text: 'Hello from the webview'});">call extension.ts</button>
 		</body>
 	</html>`;
 }
