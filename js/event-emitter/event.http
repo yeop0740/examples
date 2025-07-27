@@ -1,0 +1,5 @@
+### health check
+GET http://localhost:3001/
+
+### health check
+POST http://localhost:3001/event
