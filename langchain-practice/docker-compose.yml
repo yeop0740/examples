@@ -1,0 +1,20 @@
+services:
+  vector-store:
+    image: pgvector/pgvector:pg17-trixie
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=postgres
+    ports:
+      - '5442:5432'
+    networks:
+      - net
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready | grep accepting']
+      interval: 1s
+      timeout: 5s
+      retries: 3
+
+networks:
+  net:
+    driver: bridge
