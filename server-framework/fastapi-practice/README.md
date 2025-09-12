@@ -23,3 +23,22 @@ uv lock
 ```shell
 uv sync
 ```
+
+make docker image for deployment
+https://fastapi.tiangolo.com/ko/deployment/docker/#_5
+https://github.com/astral-sh/uv-docker-example/blob/main/Dockerfile
+https://docs.astral.sh/uv/guides/integration/docker/
+https://docs.astral.sh/uv/guides/integration/fastapi/
+https://www.uvicorn.org/deployment/docker/#docker-compose
+
+```shell
+docker build -t hello-world .
+```
+
+```shell
+docker run -d --name hello-world -p 3000:80 hello-world:latest
+```
+
+```shell
+curl localhost:3000
+```
