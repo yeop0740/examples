@@ -1,0 +1,7 @@
+{
+	"dependencies": {
+		"@nestjs/microservices": "^11.1.6",
+		"amqp-connection-manager": "^4.1.14",
+		"amqplib": "^0.10.9"
+	}
+}
