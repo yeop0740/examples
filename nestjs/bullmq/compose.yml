@@ -32,6 +32,19 @@ services:
       - redis
       - producer
 
+  bullmq-exporter:
+    build:
+      context: ./exporter
+      dockerfile: Dockerfile
+    ports:
+      - '4001:4001'
+    networks:
+      - local
+    depends_on:
+      - redis
+      - producer
+      - consumer
+
 networks:
   local:
     driver: bridge
