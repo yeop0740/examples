@@ -1,0 +1,38 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6381:6379'
+    networks:
+      - local
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping | grep PONG']
+      interval: 1s
+      timeout: 3s
+      retries: 3
+
+  main:
+    container_name: microservice-main
+    build:
+      context: ./main
+      dockerfile: Dockerfile
+    ports:
+      - '4000:3000'
+    networks:
+      - local
+    depends_on:
+      - redis
+
+  summary:
+#    container_name: microservice-summary # scale out 을 위해 제거
+    build:
+      context: ./summary
+      dockerfile: Dockerfile
+    networks:
+      - local
+    depends_on:
+      - redis
+
+networks:
+  local:
+    driver: bridge
