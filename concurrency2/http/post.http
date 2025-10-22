@@ -1,0 +1,9 @@
+### 게시글 작성
+POST http://localhost:3000/post
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMmUzNmJkNi03NDI0LTQ0ODctYTgyZS05OTFjNGE5OTcyMzEiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzYxMTM2MzY4LCJleHAiOjE3NjExMzk5Njh9.QAQgvhT2-QwU4DZGaLHLPtCOdM5kquaGlgPQ78NMmV4
+
+{
+    "title": "Hello,",
+    "contents": "World!"
+}
