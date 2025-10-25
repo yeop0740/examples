@@ -1,0 +1,15 @@
+services:
+  db-local:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=ddd
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=test
+    ports:
+      - '5436:5432'
+    networks:
+      - local
+
+networks:
+  local:
+    driver: bridge
