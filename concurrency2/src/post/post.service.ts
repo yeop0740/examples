@@ -144,6 +144,52 @@ export class PostService {
     });
   }
 
+    async createV4(userId: string, createPostDto: CreatePostDto) {
+    const now = new Date();
+    const startOfHour = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours(),
+      0,
+      0,
+      0,
+    );
+    const endOfHour = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours(),
+      59,
+      59,
+      999,
+    );
+
+    return this.prisma.$transaction(async tx => {
+        await tx.$executeRaw`select pg_advisory_xact_lock(('x'|| md5(${userId}))::bit(64)::bigint);`
+
+        const existingPost = await tx.post.findFirst({
+            where: {
+                userId,
+                createdAt: {
+                    gte: startOfHour,
+                    lte: endOfHour,
+                },
+            },
+        });
+        if (existingPost) {
+            throw new ForbiddenException('You can only create one post per hour.');
+        }
+
+        return tx.post.create({
+            data: {
+                ...createPostDto,
+                userId,
+            },
+        });
+    })
+  }
+
   findAll() {
     return this.prisma.post.findMany();
   }
