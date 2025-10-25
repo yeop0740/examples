@@ -27,3 +27,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMmUzNmJkN
 "title": "Hello,",
 "contents": "World!"
 }
+
+### 게시글 작성 4
+POST http://localhost:3000/post/v4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMmUzNmJkNi03NDI0LTQ0ODctYTgyZS05OTFjNGE5OTcyMzEiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzYxMzU3OTkyLCJleHAiOjE3NjEzNjE1OTJ9.LkNBmt75aDe6ZCvStSMqFm91X9MQcg3fRu6UgX2bcIg
+
+{
+  "title": "Hello,",
+  "contents": "World!"
+}
