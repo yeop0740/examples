@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'concurrency2-app',
-      script: 'dist/main.js',
+      script: 'dist/src/main.js',
       instances: 4,
       exec_mode: 'cluster',
       env: {
