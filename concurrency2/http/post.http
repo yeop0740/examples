@@ -1,9 +1,29 @@
 ### 게시글 작성
-POST http://localhost:3000/post
+POST http://localhost:3000/post/v1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMmUzNmJkNi03NDI0LTQ0ODctYTgyZS05OTFjNGE5OTcyMzEiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzYxMTM2MzY4LCJleHAiOjE3NjExMzk5Njh9.QAQgvhT2-QwU4DZGaLHLPtCOdM5kquaGlgPQ78NMmV4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMmUzNmJkNi03NDI0LTQ0ODctYTgyZS05OTFjNGE5OTcyMzEiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzYxMjIzNjI0LCJleHAiOjE3NjEyMjcyMjR9.ItWTQO763fWiLy72Cs19v6UIqDqKpMxqyKMz2J6BcyE
 
 {
     "title": "Hello,",
     "contents": "World!"
+}
+
+### 게시글 작성 2
+POST http://localhost:3000/post/v2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMmUzNmJkNi03NDI0LTQ0ODctYTgyZS05OTFjNGE5OTcyMzEiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzYxMjIzNjI0LCJleHAiOjE3NjEyMjcyMjR9.ItWTQO763fWiLy72Cs19v6UIqDqKpMxqyKMz2J6BcyE
+
+{
+"title": "Hello,",
+"contents": "World!"
+}
+
+### 게시글 작성 3
+POST http://localhost:3000/post/v3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMmUzNmJkNi03NDI0LTQ0ODctYTgyZS05OTFjNGE5OTcyMzEiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzYxMzU3OTkyLCJleHAiOjE3NjEzNjE1OTJ9.LkNBmt75aDe6ZCvStSMqFm91X9MQcg3fRu6UgX2bcIg
+
+{
+"title": "Hello,",
+"contents": "World!"
 }
