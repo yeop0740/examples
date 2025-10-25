@@ -73,7 +73,7 @@ export class PostService {
     );
 
     return this.prisma.$transaction(async (tx) => {
-      const existingPost = await this.prisma.post.findFirst({
+      const existingPost = await tx.post.findFirst({
         where: {
           userId,
           createdAt: {
@@ -87,7 +87,7 @@ export class PostService {
         throw new ForbiddenException('You can only create one post per hour.');
       }
 
-      return this.prisma.post.create({
+      return tx.post.create({
         data: {
           ...createPostDto,
           userId,
@@ -121,7 +121,7 @@ export class PostService {
       await tx.$queryRaw(
         Prisma.sql`SELECT id FROM users WHERE id = ${userId} FOR UPDATE;`,
       );
-      const existingPost = await this.prisma.post.findFirst({
+      const existingPost = await tx.post.findFirst({
         where: {
           userId,
           createdAt: {
@@ -135,7 +135,7 @@ export class PostService {
         throw new ForbiddenException('You can only create one post per hour.');
       }
 
-      return this.prisma.post.create({
+      return tx.post.create({
         data: {
           ...createPostDto,
           userId,
