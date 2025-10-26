@@ -51,6 +51,14 @@ export class PostController {
     return this.postService.createV4(req.user.userId, createPostDto);
   }
 
+  @Post('/v5')
+  createV5(
+    @Request() req: Request & { user: { userId: string } },
+    @Body() createPostDto: CreatePostDto,
+  ) {
+    return this.postService.createV5(req.user.userId, createPostDto);
+  }
+
   @Get()
   findAll() {
     return this.postService.findAll();
