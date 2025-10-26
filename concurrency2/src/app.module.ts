@@ -5,6 +5,7 @@ import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AppController } from './app.controller';
+import { LockModule } from './lock/lock.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AppController } from './app.controller';
     PostModule,
     AuthModule,
     PrismaModule,
+    LockModule,
   ],
   controllers: [AppController],
 })
