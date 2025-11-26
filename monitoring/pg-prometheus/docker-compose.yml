@@ -1,0 +1,65 @@
+services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=postgres
+    ports:
+      - '5450:5432'
+
+  db-metric:
+    image: prometheuscommunity/postgres-exporter
+    environment:
+      - DATA_SOURCE_URI=database:5432/postgres?sslmode=disable
+      - DATA_SOURCE_USER=postgres
+      - DATA_SOURCE_PASS=1234
+    # network_mode: host # nerdctl 이 rootless 라서 host network 에 접근할 수 없는 것으로 보임
+    depends_on:
+      - database
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+#    depends_on:
+#      - cadvisor
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_storage:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+#  cadvisor:
+#    image: gcr.io/cadvisor/cadvisor:latest
+#    container_name: cadvisor
+#    ports:
+#      - 8000:8080
+#    devices:
+#      - /dev/kmsg:/dev/kmsg
+#    privileged: true
+#    volumes:
+#      - /:/rootfs:ro
+#      - /var/run:/var/run:rw
+#      - /sys:/sys:ro
+#      - /var/lib/docker/:/var/lib/docker:ro
+      # - /run:/run:rw
+#      - /var/lib/containerd-rootless/:/var/lib/containerd:ro
+      # - /run/user/501/containerd: /var/lib/containerd:ro
+#      - /dev/disk/:/dev/disk:ro
+#    depends_on:
+#      - database
+#      - db-metric
+
+volumes:
+  grafana_storage: {}
