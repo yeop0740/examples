@@ -8,7 +8,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '../../generated/client';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import Redlock from 'redlock';
 import { LockService } from '../lock/lock.service';
