@@ -23,8 +23,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "seed": "ts-node seed.ts",
-    "clear": "ts-node clear.ts",
+    "seed": "ts-node -r dotenv/config seed.ts",
+    "clear": "ts-node -r dotenv/config clear.ts",
     "pm2:start": "rm -rf dist && pnpm build && pm2 start ecosystem.config.js",
     "pm2:stop": "pm2 stop ecosystem.config.js"
   },
