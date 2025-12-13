@@ -93,28 +93,33 @@ export class PostService implements OnModuleInit {
       999,
     );
 
-    return this.prisma.$transaction(async (tx) => {
-      const existingPost = await tx.post.findFirst({
-        where: {
-          userId,
-          createdAt: {
-            gte: startOfHour,
-            lte: endOfHour,
+    return this.prisma.$transaction(
+      async (tx) => {
+        const existingPost = await tx.post.findFirst({
+          where: {
+            userId,
+            createdAt: {
+              gte: startOfHour,
+              lte: endOfHour,
+            },
           },
-        },
-      });
+        });
 
-      if (existingPost) {
-        throw new ForbiddenException('You can only create one post per hour.');
-      }
+        if (existingPost) {
+          throw new ForbiddenException(
+            'You can only create one post per hour.',
+          );
+        }
 
-      return tx.post.create({
-        data: {
-          ...createPostDto,
-          userId,
-        },
-      });
-    });
+        return tx.post.create({
+          data: {
+            ...createPostDto,
+            userId,
+          },
+        });
+      },
+      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+    );
   }
 
   async createV3(userId: string, createPostDto: CreatePostDto) {
@@ -232,9 +237,9 @@ export class PostService implements OnModuleInit {
       999,
     );
 
-    const lock = this.lockService.acquire(`post:${userId}`, userId);
+    const key = await this.lockService.acquire(`post:${userId}`);
     try {
-      return this.prisma.$transaction(async (tx) => {
+      const post = await this.prisma.$transaction(async (tx) => {
         const existingPost = await tx.post.findFirst({
           where: {
             userId,
@@ -258,8 +263,10 @@ export class PostService implements OnModuleInit {
           },
         });
       });
+
+      return post;
     } finally {
-      await this.lockService.release(`post:${userId}`, userId);
+      await this.lockService.release(key);
     }
   }
 
