@@ -1,4 +1,4 @@
-package org.heeyeop.springcoreprinciplesadvanced.v0;
+package org.heeyeop.springcoreprinciplesadvanced.app.v0;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
