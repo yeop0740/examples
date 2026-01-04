@@ -62,5 +62,48 @@ userA, userB 모두 더 늦게 수행된 작업의 결과인 userB 의 nameStore
 18:22:24.523 [Test worker] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.FiledServiceTest -- main end
 ```
 
+### Thread Local
+해당 스레드만 접근할 수 있는 특별한 저장소를 의미한다
+각 스레드 마다 별도의 내부 저장소를  제공한다. 같은 인스턴스의 스레드 로컬 필드에 접근해도 동시성 문제가 발생하지 않는다.
+스레드 로컬은 동시에 여러 요청이 들어오더라도 각각의 스레드에 해당하는 값을 관리해준다.
+
+
+### ThreadLocalServiceTest 에서의 동시성 문제
+
+**field_synchronous** 테스트
+- FieldServiceTest 와 동일한 과정이다. 다만 Thread Local 을 사용하여 변수를 관리한다.
+
+main thread 에서의 대기로 인해 userA 와 userB 작업이 순차적으로 실행된다.
+thread local 에서 userA, userB 에 대한 각각의 값을 관리해준다(userA 의 작업과 userB 의 작업에서 실제 참조하는 변수가 다르다). 따라서 동시성 문제가 발생하지 않는다.
+userA 작업의 결과 : nameStore = null -> nameStore = "userA"
+userB 작업의 결과 : nameStore = null -> nameStore = "userB"
+
+```shell
+20:32:40.544 [Test worker] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.ThreadLocalServiceTest -- main start
+20:32:40.545 [tread-A] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.code.ThreadLocalService -- 저장 name=userA -> nameStore=null
+20:32:41.550 [tread-A] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.code.ThreadLocalService -- 조회 nameStore=userA
+20:32:42.550 [tread-B] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.code.ThreadLocalService -- 저장 name=userB -> nameStore=null
+20:32:43.556 [tread-B] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.code.ThreadLocalService -- 조회 nameStore=userB
+20:32:44.554 [Test worker] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.ThreadLocalServiceTest -- main end
+```
+
+**field_asynchronous** 테스트
+- FieldServiceTest 와 동일한 과정이다. 다만 Thread Local 을 사용하여 변수를 관리한다.
+
+userA 와 userB 작업의 순서가 보장되지 않는다.
+thread local 에서 userA, userB 에 대한 각각의 값을 관리해준다(userA 의 작업과 userB 의 작업에서 실제 참조하는 변수가 다르다). 따라서 동시성 문제가 발생하지 않는다.
+userA 작업의 결과 : nameStore = null -> nameStore = "userB"
+userB 작업의 결과 : nameStore = null -> nameStore = "userB"
+
+```shell
+20:28:30.473 [Test worker] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.ThreadLocalServiceTest -- main start
+20:28:30.474 [tread-B] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.code.ThreadLocalService -- 저장 name=userB -> nameStore=null
+20:28:30.474 [tread-A] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.code.ThreadLocalService -- 저장 name=userA -> nameStore=null
+20:28:31.480 [tread-A] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.code.ThreadLocalService -- 조회 nameStore=userA
+20:28:31.480 [tread-B] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.code.ThreadLocalService -- 조회 nameStore=userB
+20:28:33.480 [Test worker] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.ThreadLocalServiceTest -- main end
+```
+
 ### TODO
 - [ ] system call 인 print, sleep 에서 context switch 가 발생하는지 확인해보는 것 필요
+- [ ] request scope 의 LogTrace 를 생성하여 각각의 요청 마다 알맞은 객체를 생성하도록 구성하는 방법 고려 - 물론 요청 마다 객체를 생성하므로 오버헤드가 Local Thread 를 이용하는 것 보다는 클 것임
