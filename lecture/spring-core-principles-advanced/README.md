@@ -108,6 +108,16 @@ userB 작업의 결과 : nameStore = null -> nameStore = "userB"
 20:28:33.480 [Test worker] INFO org.heeyeop.springcoreprinciplesadvanced.trace.threadlocal.ThreadLocalServiceTest -- main end
 ```
 
+### 템플릿 메서드 패턴
+부모 클래스에 반복되는 패턴인 템플릿을 정의하고, 일부 변경되는 로직은 자식 클래스에서 정의하여 사용할 수 있도록 하는 방식.
+자식 클래스에서 특정 부분만 재정의 할 수 있다(상속, 오버라이딩을 이용).
+
+상속을 사용함으로 발생하는 단점.
+- 자식 클래스가 부모 클래스와 컴파일 시점에 강결합 되는 문제(의존 관계를 갖는다)
+  - 자식 클래스 입장에선 부모 클래스의 기능을 전혀 사용하지 않는다. 하지만, 템플릿 메서드 패턴을 위해 자식 클래스는 부모 클래스를 상속 받는다.
+  - 자식 클래스가 부모 클래스의 기능을 사용하지 않음에도 부모 클래스를 알아야 한다.
+  - 부모 클래스를 수정하면 자식 클래스에 영향을 줄 수 있다.
+
 ### TODO
 - [ ] system call 인 print, sleep 에서 context switch 가 발생하는지 확인해보는 것 필요
 - [ ] request scope 의 LogTrace 를 생성하여 각각의 요청 마다 알맞은 객체를 생성하도록 구성하는 방법 고려 - 물론 요청 마다 객체를 생성하므로 오버헤드가 Local Thread 를 이용하는 것 보다는 클 것임
