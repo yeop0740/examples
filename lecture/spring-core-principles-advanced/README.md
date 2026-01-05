@@ -118,6 +118,14 @@ userB 작업의 결과 : nameStore = null -> nameStore = "userB"
   - 자식 클래스가 부모 클래스의 기능을 사용하지 않음에도 부모 클래스를 알아야 한다.
   - 부모 클래스를 수정하면 자식 클래스에 영향을 줄 수 있다.
 
+### 전략 패턴
+변하지 않는 부분을 `Context` 에 두고, 변하는 부분을 `Strategy` 인터페이스로 정의하여 인터페이스를 구현하도록 하는 패턴이다.
+context 는 템플릿 역할을 하고 strategy 는 변하는 로직 역할을 한다.
+context 와 strategy 를 실행 전 원하는 모양으로 조립한뒤, context 를 실행하는 형태의 로직에서 유용하다.
+
+context 와 strategy 를 조립한 이후에는 전략을 변경하기 번거롭다.
+context 에서 strategy 를 변경하는 로직을 구성할 수 있다. 하지만, 동시성 이슈 등의 고려할 점이 생긴다.
+
 ### TODO
 - [ ] system call 인 print, sleep 에서 context switch 가 발생하는지 확인해보는 것 필요
 - [ ] request scope 의 LogTrace 를 생성하여 각각의 요청 마다 알맞은 객체를 생성하도록 구성하는 방법 고려 - 물론 요청 마다 객체를 생성하므로 오버헤드가 Local Thread 를 이용하는 것 보다는 클 것임
