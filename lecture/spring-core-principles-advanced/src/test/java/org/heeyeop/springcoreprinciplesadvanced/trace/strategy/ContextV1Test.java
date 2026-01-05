@@ -47,4 +47,56 @@ public class ContextV1Test {
         logic2.execute();
     }
 
+    @Test
+    void strategyV2() {
+        Strategy strategy1 = new Strategy() {
+            @Override
+            public void call() {
+                log.info("비즈니스 로직1 실행");
+            }
+        };
+        ContextV1 logic1 = new ContextV1(strategy1);
+        logic1.execute();
+
+        Strategy strategy2 = new Strategy() {
+            @Override
+            public void call() {
+                log.info("비즈니스 로직2 실행");
+            }
+        };
+        ContextV1 logic2 = new ContextV1(strategy2);
+        logic2.execute();
+    }
+
+    @Test
+    void strategyV3() {
+        ContextV1 logic1 = new ContextV1(new Strategy() {
+            @Override
+            public void call() {
+                log.info("비즈니스 로직1 실행");
+            }
+        });
+        logic1.execute();
+
+        ContextV1 logic2 = new ContextV1(new Strategy() {
+            @Override
+            public void call() {
+                log.info("비즈니스 로직2 실행");
+            }
+        });
+        logic2.execute();
+    }
+
+    /**
+     * 인터페이스에 함수가 1개만 선언되어 있는 경우에 람다로 변환 가능하다.
+     */
+    @Test
+    void strategyV4() {
+        ContextV1 logic1 = new ContextV1(() -> log.info("비즈니스 로직1 실행"));
+        logic1.execute();
+
+        ContextV1 logic2 = new ContextV1(() -> log.info("비즈니스 로직2 실행"));
+        logic2.execute();
+    }
+
 }
