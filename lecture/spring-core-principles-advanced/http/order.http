@@ -21,3 +21,12 @@ GET localhost:8080/v3/request?itemId=ex
 
 ### v3 예외 발생 케이스
 GET localhost:8080/v3/request
+
+### v4 일반 케이스
+GET localhost:8080/v4/request?itemId=hello
+
+### v4 예외 발생 케이스
+GET localhost:8080/v4/request?itemId=ex
+
+### v4 예외 발생 케이스
+GET localhost:8080/v4/request
