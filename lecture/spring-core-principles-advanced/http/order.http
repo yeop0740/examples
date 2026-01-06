@@ -1,0 +1,41 @@
+### v1 일반 케이스
+GET localhost:8080/v1/request?itemId=hello
+
+### v1 예외 발생 케이스
+GET localhost:8080/v1/request?itemId=ex
+
+### v2 일반 케이스
+GET localhost:8080/v2/request?itemId=hello
+
+### v2 예외 발생 케이스
+GET localhost:8080/v2/request?itemId=ex
+
+### v2 예외 발생 케이스
+GET localhost:8080/v2/request
+
+### v3 일반 케이스
+GET localhost:8080/v3/request?itemId=hello
+
+### v3 예외 발생 케이스
+GET localhost:8080/v3/request?itemId=ex
+
+### v3 예외 발생 케이스
+GET localhost:8080/v3/request
+
+### v4 일반 케이스
+GET localhost:8080/v4/request?itemId=hello
+
+### v4 예외 발생 케이스
+GET localhost:8080/v4/request?itemId=ex
+
+### v4 예외 발생 케이스
+GET localhost:8080/v4/request
+
+### v5 일반 케이스
+GET localhost:8080/v5/request?itemId=hello
+
+### v5 예외 발생 케이스
+GET localhost:8080/v5/request?itemId=ex
+
+### v5 예외 발생 케이스
+GET localhost:8080/v5/request
