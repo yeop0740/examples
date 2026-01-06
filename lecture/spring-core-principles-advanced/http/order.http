@@ -30,3 +30,12 @@ GET localhost:8080/v4/request?itemId=ex
 
 ### v4 예외 발생 케이스
 GET localhost:8080/v4/request
+
+### v5 일반 케이스
+GET localhost:8080/v5/request?itemId=hello
+
+### v5 예외 발생 케이스
+GET localhost:8080/v5/request?itemId=ex
+
+### v5 예외 발생 케이스
+GET localhost:8080/v5/request
