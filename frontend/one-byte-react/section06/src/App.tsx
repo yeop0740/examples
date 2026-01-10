@@ -6,19 +6,23 @@ import {useState} from "react";
 function App() {
     const [count, setCount] = useState(0);
 
-  return (
-    <div className="App">
-        <h1>
-            카운터 앱
-        </h1>
-        <section>
-            <Viewer count={count}/>
-        </section>
-        <section>
-            <Controller count={count} setCount={setCount}/>
-        </section>
-    </div>
-  )
+    const onClickButton = (value) => {
+        setCount(count + value);
+    }
+
+    return (
+        <div className="App">
+            <h1>
+                카운터 앱
+            </h1>
+            <section>
+                <Viewer count={count}/>
+            </section>
+            <section>
+                <Controller onClickButton={onClickButton}/>
+            </section>
+        </div>
+    )
 }
 
 export default App
