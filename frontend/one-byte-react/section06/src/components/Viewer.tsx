@@ -1,5 +1,3 @@
-import "./Viewer.css";
-
 const Viewer = ({count}) => {
     return (
         <div className="viewer">

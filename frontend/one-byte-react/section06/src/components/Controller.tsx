@@ -1,5 +1,3 @@
-import "./Controller.css";
-
 const Controller = ({count, setCount}) => {
     const onClick = (e) => {
         setCount(Number(count) + Number(e.target.value));

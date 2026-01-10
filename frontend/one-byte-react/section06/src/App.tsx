@@ -7,13 +7,17 @@ function App() {
     const [count, setCount] = useState(0);
 
   return (
-    <>
+    <div className="App">
         <h1>
             카운터 앱
         </h1>
-        <Viewer count={count}/>
-        <Controller count={count} setCount={setCount}/>
-    </>
+        <section>
+            <Viewer count={count}/>
+        </section>
+        <section>
+            <Controller count={count} setCount={setCount}/>
+        </section>
+    </div>
   )
 }
 
