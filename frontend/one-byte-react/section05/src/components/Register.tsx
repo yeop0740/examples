@@ -16,51 +16,33 @@ const Register = () => {
     })
     console.log(input);
 
-    const onChangeName = (e) => {
+    const onChange = (e) => {
         setInput({
             ...input,
-            name: e.target.value,
+            [e.target.name]: e.target.value,
         });
-    }
-
-    const onChangeBirth = (e) => {
-        setInput({
-            ...input,
-            birth: e.target.value,
-        })
-    }
-
-    const onChangeCountry = (e) => {
-        setInput({
-            ...input,
-            country: e.target.value,
-        })
-    }
-
-    const onChangeBio = (e) => {
-        setInput({
-            ...input,
-            bio: e.target.value,
-        })
     }
 
     return <div>
         <div>
             <input
                 // value={name} 초기 값을 설정하고자 할 때
-                onChange={onChangeName}
+                name="name"
+                onChange={onChange}
                 placeholder={"이름"}/>
         </div>
         <div>
             <input
+                name="birth"
                 value={input.birth}
-                onChange={onChangeBirth}
+                onChange={onChange}
                 type="date"/>
         </div>
         <div>
             <select
+                name="country"
                 value={input.country}
-                onChange={onChangeCountry}
+                onChange={onChange}
             >
                 <option></option>
                 <option>한국</option>
@@ -69,7 +51,10 @@ const Register = () => {
             </select>
         </div>
         <div>
-            <textarea value={input.bio} onChange={onChangeBio}/>
+            <textarea
+                name="bio"
+                value={input.bio}
+                onChange={onChange}/>
         </div>
     </div>;
 }
