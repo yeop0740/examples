@@ -1,14 +1,17 @@
 const Main = () => {
-    const number = 10;
+    const user = {
+        name: 'david',
+        isLogin: true,
+    }
 
     return (
-        <main>
-            <h1>main</h1>
-            <h2>{number % 2 === 0 ? '짝수' : '홀수'}</h2>
-            {10}
-            {number}
-            {[1, 2, 3]}
-        </main>
+        <>
+            {user.isLogin ? (
+                <div>로그아웃</div>
+            ) : (
+                <div>로그인</div>
+            )}
+        </>
     );
 };
 
