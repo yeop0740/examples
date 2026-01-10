@@ -1,11 +1,13 @@
 import './App.css'
 import Viewer from "./components/Viewer.tsx";
 import Controller from "./components/Controller.tsx";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 function App() {
     const [count, setCount] = useState(0);
     const [input, setInput] = useState("");
+
+    const isMount = useRef(false);
 
     /**
      * 1. 마운트
@@ -15,6 +17,23 @@ function App() {
     useEffect(() => {
         console.log("마운트");
     }, []);
+
+    /**
+     * 2. 업데이트
+     * 마운트와 업데이트가 있을 때마다 콜백이 실행된다.
+     */
+    useEffect(() => {
+        console.log("마운트 혹은 업데이트");
+    });
+
+    useEffect(() => {
+        if (!isMount.current) {
+            isMount.current = true;
+            return;
+        }
+        console.log("마운트 이후 업데이트");
+    });
+
 
     const onClickButton = (value) => {
         setCount(count + value); // 비동기적으로 실행됨
