@@ -8,25 +8,40 @@ import {useState} from "react";
  * 4. 자기소개
  */
 const Register = () => {
-    const [name, setName] = useState("");
-    const [birth, setBirth] = useState("");
-    const [country, setCountry] = useState("");
-    const [bio, setBio] = useState("");
+    const [input, setInput] = useState({
+        name: "",
+        birth: "",
+        country: "",
+        bio: "",
+    })
+    console.log(input);
 
     const onChangeName = (e) => {
-        setName(e.target.value);
+        setInput({
+            ...input,
+            name: e.target.value,
+        });
     }
 
     const onChangeBirth = (e) => {
-        setBirth(e.target.value);
+        setInput({
+            ...input,
+            birth: e.target.value,
+        })
     }
 
     const onChangeCountry = (e) => {
-        setCountry(e.target.value);
+        setInput({
+            ...input,
+            country: e.target.value,
+        })
     }
 
     const onChangeBio = (e) => {
-        setBio(e.target.value);
+        setInput({
+            ...input,
+            bio: e.target.value,
+        })
     }
 
     return <div>
@@ -38,13 +53,13 @@ const Register = () => {
         </div>
         <div>
             <input
-                value={birth}
+                value={input.birth}
                 onChange={onChangeBirth}
                 type="date"/>
         </div>
         <div>
             <select
-                value={country}
+                value={input.country}
                 onChange={onChangeCountry}
             >
                 <option></option>
@@ -54,7 +69,7 @@ const Register = () => {
             </select>
         </div>
         <div>
-            <textarea value={bio} onChange={onChangeBio}/>
+            <textarea value={input.bio} onChange={onChangeBio}/>
         </div>
     </div>;
 }
