@@ -1,7 +1,8 @@
 import * as React from "react";
 
 const Button = ({children, text, color = "black"}: {children?: React.ReactNode, text: string, color?: string}) => {
-    const onClickButton = () => {
+    const onClickButton = (e) => {
+        console.log(e);
         console.log(text);
     };
 
