@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 /**
  * 간단한 회원가입 폼
@@ -14,7 +14,8 @@ const Register = () => {
         country: "",
         bio: "",
     })
-    console.log(input);
+    const refObj = useRef(0);
+    console.log("register rendering");
 
     const onChange = (e) => {
         setInput({
@@ -24,6 +25,16 @@ const Register = () => {
     }
 
     return <div>
+        <div>
+            <button
+                onClick={() => {
+                    refObj.current += 1;
+                    console.log(refObj.current)
+                }}
+            >
+                ref + 1
+            </button>
+        </div>
         <div>
             <input
                 // value={name} 초기 값을 설정하고자 할 때
