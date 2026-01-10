@@ -2,6 +2,7 @@ import './App.css'
 import Viewer from "./components/Viewer.tsx";
 import Controller from "./components/Controller.tsx";
 import {useEffect, useRef, useState} from "react";
+import Even from "./components/Even.tsx";
 
 function App() {
     const [count, setCount] = useState(0);
@@ -13,7 +14,7 @@ function App() {
      * 1. 마운트
      * 해당 deps 에는 아무런 값도 없으므로 처음 호출 이후 다시 실행되지 않는다.
      * 즉, 마운트 때만 실행된다.
-      */
+     */
     useEffect(() => {
         console.log("마운트");
     }, []);
@@ -55,6 +56,7 @@ function App() {
             </section>
             <section>
                 <Viewer count={count}/>
+                {count % 2 === 0 ? <Even/> : null}
             </section>
             <section>
                 <Controller onClickButton={onClickButton}/>
