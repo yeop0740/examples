@@ -8,12 +8,13 @@ function App() {
     const [input, setInput] = useState("");
 
     /**
-     * 의존성 배열, dependency array, deps
-     * useEffect 는 두 번째 배열 인자에 의존한다.
-     */
+     * 1. 마운트
+     * 해당 deps 에는 아무런 값도 없으므로 처음 호출 이후 다시 실행되지 않는다.
+     * 즉, 마운트 때만 실행된다.
+      */
     useEffect(() => {
-        console.log(`count: ${count}, input: ${input}`);
-    }, [count, input]);
+        console.log("마운트");
+    }, []);
 
     const onClickButton = (value) => {
         setCount(count + value); // 비동기적으로 실행됨
