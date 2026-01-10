@@ -1,6 +1,5 @@
 import './App.css';
-import Bulb from "./components/Bulb.tsx";
-import Counter from "./components/Counter.tsx";
+import Register from "./components/Register.tsx";
 
 /**
  * Header 컴포넌트는 App 컴포넌트의 자식 컴포넌트가 된다.
@@ -14,8 +13,7 @@ function App() {
      */
     return (
         <>
-            <Bulb />
-            <Counter />
+            <Register />
         </>
     );
 }
