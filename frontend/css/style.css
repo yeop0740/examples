@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+}
+
+/* 모든 a 태그에 대해 폰트 색을 black 으로 설정*/
+a { /* selector: 효과를 적용할 태그를 선택 */
+    color: black; /* declaration: 적용할 효과 - property:value 쌍 */
+    text-decoration: none;
+}
+
+h1 {
+    /*
+        제목의 크기를 크게 만드려고 한다.
+        -> css, text size, property
+        가운데 정렬하려고 한다.
+        -> css, text center, property
+    */
+    font-size: 400%;
+    text-align: center;
+    border-bottom: 1px solid gray;
+    margin: 0;
+    padding: 20px;
+}
+
+.visited { /* tag 내 class 속성을 선택하는 selector 는 . 으로 시작 */
+    color: gray;
+}
+
+#active {
+    color: red; /* id 속성이 class 속성보다 우선 순위가 높음(id > class > 일반 태그) */
+}
+
+ol {
+    border-right: 1px solid gray;
+    width: 100px;
+    margin: 0;
+    padding: 20px;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+}
+
+#grid ol { /* id 가 grid 인 태그의 자식 ol 태그를 의미 */
+    padding-left: 33px;
+}
+
+#article {
+    padding-left: 25px;
+}
+
+@media(max-width: 800px) {
+    #grid {
+        display: block;
+    }
+
+    ol {
+        border-right: none;
+    }
+
+    h1 {
+        border-bottom: none;
+    }
+}
