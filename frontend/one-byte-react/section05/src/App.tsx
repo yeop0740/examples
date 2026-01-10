@@ -1,47 +1,21 @@
-import {useState} from "react";
 import './App.css';
-
-const Bulb = ({light}) => {
-    console.log(light);
-
-    return (
-        <div>
-            {light === "ON" ?
-                <h1 style={{backgroundColor: "orange"}}>ON</h1> :
-                <h1 style={{backgroundColor: "gray"}}>OFF</h1>}
-        </div>
-    );
-}
+import Bulb from "./components/Bulb.tsx";
+import Counter from "./components/Counter.tsx";
 
 /**
  * Header 컴포넌트는 App 컴포넌트의 자식 컴포넌트가 된다.
  * App 컴포넌트는 Header 컴포넌트의 부모 컴포넌트가 된다.
  */
 function App() {
-    const [count, setCount] = useState(0);
-    const [light, setLight] = useState("OFF");
 
+    /**
+     * count 변경 시 App 컴포넌트 리렌더링
+     * App 컴포넌트의 자식 컴포넌트인 Bulb 컴포넌트도 리렌더링 된다. - count 와 관련 없는 컴포넌트가 리렌더링 된다.
+     */
     return (
         <>
-            <div>
-                <Bulb light={light} />
-                <button
-                    onClick={() => {
-                        setLight(light === "ON" ? "OFF" : "ON");
-                    }}>
-                    {light === "ON" ? "끄기" : "켜기"}
-                </button>
-            </div>
-            <div>
-                {count}
-                <button
-                    onClick={() => {
-                        setCount(count + 1);
-                    }}
-                >
-                    +
-                </button>
-            </div>
+            <Bulb />
+            <Counter />
         </>
     );
 }
