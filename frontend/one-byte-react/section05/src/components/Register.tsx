@@ -14,10 +14,11 @@ const Register = () => {
         country: "",
         bio: "",
     })
-    const refObj = useRef(0);
-    console.log("register rendering");
+    const countRef = useRef(0);
 
     const onChange = (e) => {
+        countRef.current++;
+        console.log(countRef.current);
         setInput({
             ...input,
             [e.target.name]: e.target.value,
@@ -25,16 +26,6 @@ const Register = () => {
     }
 
     return <div>
-        <div>
-            <button
-                onClick={() => {
-                    refObj.current += 1;
-                    console.log(refObj.current)
-                }}
-            >
-                ref + 1
-            </button>
-        </div>
         <div>
             <input
                 // value={name} 초기 값을 설정하고자 할 때
