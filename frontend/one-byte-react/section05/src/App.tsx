@@ -1,5 +1,5 @@
 import './App.css';
-import Register from "./components/Register.tsx";
+import HookExam from "./components/HookExam.tsx";
 
 /**
  * Header 컴포넌트는 App 컴포넌트의 자식 컴포넌트가 된다.
@@ -13,7 +13,7 @@ function App() {
      */
     return (
         <>
-            <Register />
+            <HookExam />
         </>
     );
 }
