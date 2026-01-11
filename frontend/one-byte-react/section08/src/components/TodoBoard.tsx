@@ -3,7 +3,7 @@ import {useState} from "react";
 import TodoItem from "./TodoItem.tsx";
 import "./TodoBoard.css";
 
-const TodoBoard = ({todos, onDelete}) => {
+const TodoBoard = ({todos, onDelete, onUpdate}) => {
     const [keyword, setKeyword] = useState("");
 
     const onSearch = (keyword) => {
@@ -23,7 +23,7 @@ const TodoBoard = ({todos, onDelete}) => {
             <div
                 className="TodoItems"
             >
-                {filteredTodos.map(todo => <TodoItem key={todo.id} {...todo} onDelete={onDelete}/>)}
+                {filteredTodos.map(todo => <TodoItem key={todo.id} {...todo} onDelete={onDelete} onUpdate={onUpdate} />)}
             </div>
         </div>
     );
