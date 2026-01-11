@@ -38,11 +38,16 @@ function App() {
         setTodos(newTodos);
     }
 
+    const onDelete = ({id}) => {
+        const newTodos = todos.filter(todo => todo.id !== id);
+        setTodos(newTodos);
+    }
+
     return (
         <div className="App">
             <DateHeader/>
             <CreateTodoForm onCreate={onCreate}/>
-            <TodoBoard todos={todos} />
+            <TodoBoard todos={todos} onDelete={onDelete} />
         </div>
     );
 }

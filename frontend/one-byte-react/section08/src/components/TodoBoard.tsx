@@ -3,7 +3,7 @@ import {useState} from "react";
 import TodoItem from "./TodoItem.tsx";
 import "./TodoBoard.css";
 
-const TodoBoard = ({todos}) => {
+const TodoBoard = ({todos, onDelete}) => {
     const [keyword, setKeyword] = useState("");
 
     const onSearch = (keyword) => {
@@ -20,7 +20,7 @@ const TodoBoard = ({todos}) => {
                 {
                     todos
                         .filter(todo => todo.content.includes(keyword))
-                        .map(todo => <TodoItem key={todo.id} {...todo} />)
+                        .map(todo => <TodoItem key={todo.id} onDelete={onDelete} {...todo} />)
                 }
             </div>
         </div>
