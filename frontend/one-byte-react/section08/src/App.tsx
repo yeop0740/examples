@@ -2,22 +2,21 @@ import './App.css'
 import DateHeader from "./components/DateHeader.tsx";
 import CreateTodoForm from "./components/CreateTodoForm.tsx";
 import TodoBoard from "./components/TodoBoard.tsx";
-import {useState} from "react";
-import {v7} from "uuid";
+import {useRef, useState} from "react";
 
 const mockData = [
     {
-        id: "123123-123123-123123-123123",
+        id: 1,
         content: "React 공부하기",
         createdAt: new Date("2025-01-11T15:24:00.000+09:00"),
     },
     {
-        id: "123123-123123-123123-123124",
+        id: 2,
         content: "빨래 널기",
         createdAt: new Date("2025-01-11T15:25:00.000+09:00"),
     },
     {
-        id: "123123-123123-123123-123125",
+        id: 3,
         content: "노래 연습하기",
         createdAt: new Date("2025-01-11T15:26:00.000+09:00"),
     },
@@ -25,10 +24,11 @@ const mockData = [
 
 function App() {
     const [todos, setTodos] = useState(mockData);
+    const idRef = useRef(4);
 
     const onCreate = ({content, createdAt}) => {
         const todo = {
-            id: v7(),
+            id: idRef.current++,
             content,
             createdAt,
         };
