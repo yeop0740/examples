@@ -10,6 +10,12 @@ const TodoBoard = ({todos, onDelete}) => {
         setKeyword(keyword);
     }
 
+    const searchFiltering = () => {
+        return todos.filter(todo => todo.content.toLowerCase().includes(keyword.toLowerCase()));
+    }
+
+    const filteredTodos = searchFiltering();
+
     return (
         <div className="TodoBoard">
             <h4>Todo List ✅</h4>
@@ -17,11 +23,7 @@ const TodoBoard = ({todos, onDelete}) => {
             <div
                 className="TodoItems"
             >
-                {
-                    todos
-                        .filter(todo => todo.content.includes(keyword))
-                        .map(todo => <TodoItem key={todo.id} onDelete={onDelete} {...todo} />)
-                }
+                {filteredTodos.map(todo => <TodoItem key={todo.id} {...todo} onDelete={onDelete}/>)}
             </div>
         </div>
     );
