@@ -1,0 +1,11 @@
+section.create-todo-form > input {
+    margin-right: 5px;
+}
+
+section.create-todo-form > button {
+    margin-left: 5px;
+    background-color: deepskyblue;
+    border-color: lightgray;
+    border-radius: 5px;
+    border-width: 1px;
+}
