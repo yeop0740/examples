@@ -1,6 +1,6 @@
 import "./CreateTodoForm.css";
 
-const CreateToDoForm = () => {
+const CreateTodoForm = () => {
     return (
         <div className="CreateTodoForm">
             <input placeholder="할 일을 입력하세요"/>
@@ -9,4 +9,4 @@ const CreateToDoForm = () => {
     )
 }
 
-export default CreateToDoForm;
+export default CreateTodoForm;
