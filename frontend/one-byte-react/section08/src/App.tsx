@@ -27,7 +27,6 @@ function App() {
     const [todos, setTodos] = useState(mockData);
 
     const onCreate = ({content, createdAt}) => {
-        console.log('onCreate');
         const todo = {
             id: v7(),
             content,
