@@ -6,6 +6,7 @@ const CreateTodoForm = ({onCreate}) => {
 
     const onSubmit = () => {
         onCreate({content: input, createdAt: new Date()})
+        setInput("");
     }
 
     return (
