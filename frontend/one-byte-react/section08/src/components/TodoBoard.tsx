@@ -1,6 +1,7 @@
 import SearchTodoForm from "./SearchTodoForm.tsx";
 import {useState} from "react";
 import TodoItem from "./TodoItem.tsx";
+import "./TodoBoard.css";
 
 const mockData = [
     {
@@ -26,10 +27,12 @@ const TodoBoard = () => {
     }
 
     return (
-        <div>
-            <div>Todo List</div>
+        <div className="TodoBoard">
+            <h4>Todo List ✅</h4>
             <SearchTodoForm onSearch={onSearch}/>
-            {todos.map(todo => <TodoItem {...todo} />)}
+            <div className="TodoItems">
+                {todos.map(todo => <TodoItem {...todo} />)}
+            </div>
         </div>
     );
 }

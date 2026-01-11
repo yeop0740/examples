@@ -1,9 +1,11 @@
+import "./TodoItem.css";
+
 const TodoItem = ({content, createdAt}) => {
     return (
-        <div>
+        <div className="TodoItem">
             <input type="checkbox"/>
-            {content}
-            {createdAt.toString()}
+            <div className="content">{content}</div>
+            <div className="createdAt">{createdAt.toLocaleDateString()}</div>
             <button>삭제</button>
         </div>
     );

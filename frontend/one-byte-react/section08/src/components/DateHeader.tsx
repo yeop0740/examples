@@ -3,10 +3,10 @@ import './DateHeader.css';
 const DateHeader = () => {
     const today = new Date();
     return (
-        <section>
-            <div className="date">오늘은 📅</div>
+        <div className="DateHeader">
+            <h3>오늘은 📅</h3>
             <h1>{today.toDateString()}</h1>
-        </section>
+        </div>
     );
 }
 

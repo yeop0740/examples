@@ -1,11 +1,20 @@
-section.create-todo-form > input {
-    margin-right: 5px;
+.CreateTodoForm {
+    display: flex;
+    gap: 10px;
 }
 
-section.create-todo-form > button {
-    margin-left: 5px;
-    background-color: deepskyblue;
-    border-color: lightgray;
+.CreateTodoForm input {
+    flex: 1;
+    padding: 15px;
+    border: 1px solid lightgray;
     border-radius: 5px;
-    border-width: 1px;
+}
+
+.CreateTodoForm button {
+    cursor: pointer;
+    width: 80px;
+    border: none;
+    background-color: deepskyblue;
+    color: white;
+    border-radius: 5px;
 }

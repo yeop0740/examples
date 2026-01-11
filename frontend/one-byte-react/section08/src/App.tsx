@@ -5,11 +5,11 @@ import TodoBoard from "./components/TodoBoard.tsx";
 
 function App() {
     return (
-        <>
+        <div className="App">
             <DateHeader/>
             <CreateToDoForm/>
             <TodoBoard />
-        </>
+        </div>
     );
 }
 
