@@ -1,10 +1,12 @@
+import './DateHeader.css';
+
 const DateHeader = () => {
     const today = new Date();
     return (
-        <div>
-            <div>오늘은</div>
-            <h1>{today.toISOString()}</h1>
-        </div>
+        <section>
+            <div className="date">오늘은 📅</div>
+            <h1>{today.toDateString()}</h1>
+        </section>
     );
 }
 
