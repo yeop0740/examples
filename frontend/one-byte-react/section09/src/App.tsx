@@ -3,6 +3,7 @@ import DateHeader from "./components/DateHeader.tsx";
 import CreateTodoForm from "./components/CreateTodoForm.tsx";
 import TodoBoard from "./components/TodoBoard.tsx";
 import {useRef, useState} from "react";
+import Exam from "./components/Exam.tsx";
 
 const mockData = [
     {
@@ -52,9 +53,7 @@ function App() {
 
     return (
         <div className="App">
-            <DateHeader/>
-            <CreateTodoForm onCreate={onCreate}/>
-            <TodoBoard todos={todos} onDelete={onDelete} onUpdate={onUpdate} />
+            <Exam />
         </div>
     );
 }
