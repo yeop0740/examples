@@ -1,0 +1,62 @@
+import './App.css'
+import DateHeader from "./components/DateHeader.tsx";
+import CreateTodoForm from "./components/CreateTodoForm.tsx";
+import TodoBoard from "./components/TodoBoard.tsx";
+import {useRef, useState} from "react";
+
+const mockData = [
+    {
+        id: 1,
+        content: "React 공부하기",
+        createdAt: new Date("2025-01-11T15:24:00.000+09:00"),
+        isDone: false,
+    },
+    {
+        id: 2,
+        content: "빨래 널기",
+        createdAt: new Date("2025-01-11T15:25:00.000+09:00"),
+        isDone: false,
+    },
+    {
+        id: 3,
+        content: "노래 연습하기",
+        createdAt: new Date("2025-01-11T15:26:00.000+09:00"),
+        isDone: false,
+    },
+];
+
+function App() {
+    const [todos, setTodos] = useState(mockData);
+    const idRef = useRef(4);
+
+    const onCreate = ({content, createdAt}) => {
+        const todo = {
+            id: idRef.current++,
+            content,
+            createdAt,
+            isDone: false,
+        };
+
+        const newTodos = [...todos, todo];
+        setTodos(newTodos);
+    }
+
+    const onDelete = ({id}) => {
+        const newTodos = todos.filter(todo => todo.id !== id);
+        setTodos(newTodos);
+    }
+
+    const onUpdate = (id) => {
+        setTodos(todos.map(todo => todo.id === id ? {...todo, isDone: !todo.isDone} : todo));
+    }
+
+    return (
+        <div className="App">
+            <DateHeader/>
+            <CreateTodoForm onCreate={onCreate}/>
+            <TodoBoard todos={todos} onDelete={onDelete} onUpdate={onUpdate} />
+        </div>
+    );
+}
+
+export default App

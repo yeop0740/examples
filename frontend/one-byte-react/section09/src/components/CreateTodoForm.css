@@ -1,0 +1,20 @@
+.CreateTodoForm {
+    display: flex;
+    gap: 10px;
+}
+
+.CreateTodoForm input {
+    flex: 1;
+    padding: 15px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.CreateTodoForm button {
+    cursor: pointer;
+    width: 80px;
+    border: none;
+    background-color: deepskyblue;
+    color: white;
+    border-radius: 5px;
+}

@@ -1,0 +1,23 @@
+.TodoBoard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.TodoBoard > input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid darkgray;
+    padding: 15px 0px;
+}
+
+.TodoBoard > input:focus {
+    outline: none;
+    border-bottom: 1px solid deepskyblue;
+}
+
+.TodoBoard > .TodoItems {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
