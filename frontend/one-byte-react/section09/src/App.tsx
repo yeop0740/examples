@@ -2,8 +2,7 @@ import './App.css'
 import DateHeader from "./components/DateHeader.tsx";
 import CreateTodoForm from "./components/CreateTodoForm.tsx";
 import TodoBoard from "./components/TodoBoard.tsx";
-import {useRef, useState} from "react";
-import Exam from "./components/Exam.tsx";
+import {useReducer, useRef} from "react";
 
 const mockData = [
     {
@@ -26,34 +25,60 @@ const mockData = [
     },
 ];
 
+function reducer(state, action) {
+    switch(action.type) {
+        case "CREATE":
+            return [action.data, ...state];
+        case "UPDATE" :
+            return state.map(todo => todo.id === action.targetId ? {...todo, isDone: !todo.isDone} : todo);
+        case "DELETE":
+            return state.filter(todo => todo.id !== action.targetId);
+        default:
+            return state;
+    }
+}
+
 function App() {
-    const [todos, setTodos] = useState(mockData);
+    const [todos, dispatch] = useReducer(reducer, mockData);
     const idRef = useRef(4);
 
     const onCreate = ({content, createdAt}) => {
-        const todo = {
-            id: idRef.current++,
-            content,
-            createdAt,
-            isDone: false,
-        };
-
-        const newTodos = [...todos, todo];
-        setTodos(newTodos);
-    }
+        dispatch({
+            type: "CREATE",
+            data: {
+                id: idRef.current,
+                content,
+                createdAt,
+                isDone: false,
+            },
+        });
+    };
 
     const onDelete = ({id}) => {
-        const newTodos = todos.filter(todo => todo.id !== id);
-        setTodos(newTodos);
-    }
+        dispatch({
+            type: "DELETE",
+            targetId: id,
+        });
+    };
 
     const onUpdate = (id) => {
-        setTodos(todos.map(todo => todo.id === id ? {...todo, isDone: !todo.isDone} : todo));
-    }
+        dispatch({
+            type: "UPDATE",
+            targetId: id,
+        });
+    };
 
     return (
         <div className="App">
-            <Exam />
+            <DateHeader />
+            <CreateTodoForm
+                onCreate={onCreate}
+            />
+            <TodoBoard
+                todos={todos}
+                onDelete={onDelete}
+                onUpdate={onUpdate}
+            />
         </div>
     );
 }
