@@ -60,3 +60,12 @@ Minikube가 실행 중이어야 합니다 (`minikube start`).
 - `POST /todos`: 항목 추가
 - `PUT /todos/:id`: 항목 수정 (완료 상태 토글)
 - `DELETE /todos/:id`: 항목 삭제
+
+```shell
+minikube image load deploy-in-minikube-backend:latest
+minikube image load deploy-in-minikube-frontend:latest
+```
+
+```shell
+kubectl apply -f k8s-manifest.yaml
+```
