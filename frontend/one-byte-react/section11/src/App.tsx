@@ -26,7 +26,7 @@ function App() {
             {/*Routes 컴포넌트 안에는 Route 컴포넌트만 들어갈 수 있다.*/}
                 <Route path="/" element={<Home/>}/>
                 <Route path="/new" element={<New/>}/>
-                <Route path="diary" element={<Diary/>}/>
+                <Route path="/diary/:id" element={<Diary/>}/>
                 <Route path="*" element={<Notfound/>}/>
             </Routes>
         </>

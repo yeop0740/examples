@@ -1,5 +1,9 @@
+import {useParams} from "react-router";
+
 const Diary = () => {
-    return <div>Diary</div>;
+    const {id} = useParams();
+
+    return <div>Diary: {id}</div>;
 }
 
 export default Diary;
