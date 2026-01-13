@@ -69,3 +69,5 @@ minikube image load deploy-in-minikube-frontend:latest
 ```shell
 kubectl apply -f k8s-manifest.yaml
 ```
+
+https://github.com/kubernetes/examples/blob/master/web/guestbook/all-in-one/frontend.yaml
