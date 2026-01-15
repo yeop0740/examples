@@ -282,3 +282,4 @@ context 에서 지정한 `hello-world` namespace 에서 deployment 가 생성된
 
 ### 참고자료
 [공식문서](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
+[cheat sheet](https://kubernetes.io/ko/docs/reference/kubectl/cheatsheet/)
