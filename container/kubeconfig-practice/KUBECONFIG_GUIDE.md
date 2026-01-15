@@ -3,6 +3,8 @@
 Kubernetes 클러스터 접근 권한을 관리하는 Kubeconfig 설정 방법에 대해 다룹니다.
 이 가이드는 Kubeconfig의 기본 구조를 이해하고, **단일 Config 파일**과 **여러 Config 파일**을 사용하는 방법을 설명합니다.
 
+로컬 맥 OS 기준으로 작성하였습니다. 
+
 ---
 
 ## 개인적인 사용법
@@ -207,7 +209,7 @@ kubectl config --kubeconfig="$HOME/.kube/config-demo2" get-contexts
 여러 파일을 `kubectl`이 동시에 인식하도록 `KUBECONFIG` 환경 변수를 설정합니다.
 
 ```shell
-# 환경 변수 설정 (구분자: 리눅스/맥 ':', 윈도우 ';')
+# 환경 변수 설정
 export KUBECONFIG="${HOME}/.kube/config:${HOME}/.kube/config-demo:${HOME}/.kube/config-demo2"
 
 # 통합된 Context 확인
@@ -218,7 +220,7 @@ kubectl config get-contexts
 
 
 ### 환경 변수를 사용하는 경우 추가 설정
-export 를 이용하여 환경 변수를 추가했을 때 terminal 을 종료하거나 새로운 세션을 열면 환경 변수가 초기화 된다. 이를 방지하기 위해 zsh 이 실행될 때마다 실행하는 .zshrc 파일에 export 명령어를 추가하여 사용한다.
+export 를 이용하여 환경 변수를 추가했을 때 terminal 을 종료하거나 새로운 세션을 열면 환경 변수가 초기화 됩니다. 이를 방지하기 위해 zsh 이 실행될 때마다 실행하는 .zshrc 파일에 export 명령어를 추가하여 사용할 수 있습니다.
 
 ```shell
 echo "export KUBECONFIG=${HOME}/.kube/config:${HOME}/.kube/config-demo:${HOME}/.kube/config-demo2" >> ~/.zshrc
