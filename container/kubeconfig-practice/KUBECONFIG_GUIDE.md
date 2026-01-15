@@ -194,8 +194,8 @@ contexts:
 사용할 context 를 포함한 파일을 `--kubeconfig` 를 이용하여 지정합니다.
 
 ```shell
-kubectl config --kubeconfig=~/.kube/config-demo get-contexts
-kubectl config --kubeconfig=~/.kube/config-demo2 get-contexts
+kubectl config --kubeconfig="$HOME/.kube/config-demo" get-contexts
+kubectl config --kubeconfig="$HOME/.kube/config-demo2" get-contexts
 ```
 
 `config-demo` 를 지정하였을 때 해당 파일에 정의된 `developer`, `exp-test` 컨텍스트를 조회할 수 있습니다.
