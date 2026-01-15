@@ -112,6 +112,7 @@ current-context: minikube
 
 ```shell
 # Context 전환
+# kubectl config --kubeconfig="$HOME/.kube/config" use-contexts hello-world 와 같은 표현
 kubectl config use-context hello-world
 
 # 현재 Context 확인
