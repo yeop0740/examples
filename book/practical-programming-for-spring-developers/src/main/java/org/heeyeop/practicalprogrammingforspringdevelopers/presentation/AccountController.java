@@ -2,7 +2,6 @@ package org.heeyeop.practicalprogrammingforspringdevelopers.presentation;
 
 import ch.qos.logback.core.util.StringUtil;
 import lombok.RequiredArgsConstructor;
-import org.heeyeop.practicalprogrammingforspringdevelopers.application.AccountService;
 import org.heeyeop.practicalprogrammingforspringdevelopers.domain.Account;
 import org.heeyeop.practicalprogrammingforspringdevelopers.presentation.dto.AccountUpdateNicknameRequest;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +24,4 @@ public class AccountController {
 
         throw new RuntimeException();
     }
-
 }
