@@ -11,18 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AccountService {
 
-    private final AccountJpaRepository accountJpaRepository; // jpa 의존적 코드
+    private final AccountRepository accountRepository;
 
     @Transactional
     public Account updateNicknameById(long id, String nickname) {
-        Account account = accountJpaRepository.findById(id)
-                .orElseThrow(RuntimeException::new)
-                .toModel(); // jpa 의존적 코드
-
+        Account account = accountRepository.findById(id);
         account = account.withNickname(nickname);
-
-        accountJpaRepository.save(AccountJpaEntity.from(account)); // jpa 의존적 코드
-
+        accountRepository.save(account);
         return account;
     }
 }
