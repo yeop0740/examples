@@ -1,0 +1,4 @@
+spring:
+  application:
+    name: k8s-client-demo-1
+
