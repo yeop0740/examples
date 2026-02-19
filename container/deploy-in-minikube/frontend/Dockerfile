@@ -1,4 +1,4 @@
-FROM node:20-alpine as build
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
@@ -6,6 +6,8 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+
+ENV VITE_API_ENDPOINT=http://127.0.0.1:8888
 
 RUN npm run build
 
