@@ -29,3 +29,13 @@ Todo List 애플리케이션의 프론트엔드입니다. Vite, React, TypeScrip
 
 Docker 빌드 시 멀티 스테이지 빌드를 사용하여 Nginx 이미지로 정적 파일을 서빙합니다.
 `nginx.conf` 설정을 통해 `/api/` 경로로 들어오는 요청을 백엔드 컨테이너로 프록시합니다.
+
+```shell
+docker build -t frontend:0.0.1 . && \
+kind load docker-image frontend:0.0.1 --name kind && \
+k rollout restart deployment frontend
+```
+
+```shell
+k port-forward -n envoy-gateway-system services/envoy-default-gateway-b7f3e5b1 8888:80
+```
