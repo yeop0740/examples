@@ -11,6 +11,7 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [text, setText] = useState('');
 
+  const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT ?? 'http://localhost:8888';
   const API_URL = '/api/todos';
 
   useEffect(() => {
@@ -19,10 +20,10 @@ function App() {
 
   const fetchTodos = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(`${API_ENDPOINT}${API_URL}`);
       if (response.ok) {
         const data = await response.json();
-        setTodos(data);
+        setTodos(data.entities || []);
       }
     } catch (error) {
       console.error('Error fetching todos:', error);
@@ -34,7 +35,7 @@ function App() {
     if (!text.trim()) return;
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(`${API_ENDPOINT}${API_URL}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,8 +43,7 @@ function App() {
         body: JSON.stringify({ text }),
       });
       if (response.ok) {
-        const newTodo = await response.json();
-        setTodos([...todos, newTodo]);
+        fetchTodos();
         setText('');
       }
     } catch (error) {
@@ -53,7 +53,7 @@ function App() {
 
   const toggleTodo = async (id: string, completed: boolean) => {
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
+      const response = await fetch(`${API_ENDPOINT}${API_URL}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -61,8 +61,9 @@ function App() {
         body: JSON.stringify({ completed: !completed }),
       });
       if (response.ok) {
-        const updatedTodo = await response.json();
-        setTodos(todos.map((t) => (t.id === id ? updatedTodo : t)));
+        fetchTodos();
+        // const updatedTodo = await response.json();
+        // setTodos(todos.map((t) => (t.id === id ? updatedTodo : t)));
       }
     } catch (error) {
       console.error('Error toggling todo:', error);
@@ -71,11 +72,12 @@ function App() {
 
   const deleteTodo = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
+      const response = await fetch(`${API_ENDPOINT}${API_URL}/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
-        setTodos(todos.filter((t) => t.id !== id));
+        fetchTodos();
+        // setTodos(todos.filter((t) => t.id !== id));
       }
     } catch (error) {
       console.error('Error deleting todo:', error);
