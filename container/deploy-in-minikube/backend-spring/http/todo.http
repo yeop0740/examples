@@ -1,0 +1,18 @@
+### create todo
+POST http://localhost:8080/todos
+content-type: application/json
+
+{
+  "text": "hello world"
+}
+
+### get todo list
+GET http://localhost:8080/todos
+
+### update todo
+PUT http://localhost:8080/todos/47e878e7-0369-474e-a750-ab92c31f97ca
+content-type: application/json
+
+{
+  "completed": true
+}
