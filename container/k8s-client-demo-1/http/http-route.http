@@ -1,0 +1,14 @@
+### get httproute
+GET http://localhost:8080/http-routes
+
+### create httproute
+POST http://localhost:8080/http-routes
+content-type: application/json
+
+{
+      "domainName": "hello2.world",
+      "resourceName": "hello2-world"
+}
+
+### delete httproute
+DELETE http://localhost:8080/http-routes/hello2-world

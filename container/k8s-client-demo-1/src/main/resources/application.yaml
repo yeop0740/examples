@@ -2,3 +2,12 @@ spring:
   application:
     name: k8s-client-demo-1
 
+kubernetes:
+  master: ${K8S_SERVER_API}
+  certs:
+    ca:
+      data: ${CERT_CA_DATA}
+    client:
+      data: ${CERT_CLIENT_DATA}
+      key:
+        data: ${CERT_CLIENT_KEY_DATA}
