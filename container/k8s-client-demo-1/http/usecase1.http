@@ -1,0 +1,30 @@
+### register domain
+POST http://localhost:8080/domains
+content-type: application/json
+
+{
+  "domainName": "hello.world"
+}
+
+### register certificate
+POST http://localhost:8080/certificates
+content-type: application/json
+
+{
+  "domainName": "hello.world",
+  "filename": "rsa.pem"
+}
+
+### renew certificate
+PUT http://localhost:8080/certificates/hello-world
+content-type: application/json
+
+{
+  "filename": "rsa.pem"
+}
+
+### delete certificate
+DELETE http://localhost:8080/certificates/hello.world
+
+### delete domain
+DELETE http://localhost:8080/domains/hello.world

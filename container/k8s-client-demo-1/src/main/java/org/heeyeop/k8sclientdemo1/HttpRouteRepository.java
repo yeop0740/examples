@@ -18,7 +18,7 @@ public class HttpRouteRepository {
 
     private final KubernetesClient client;
 
-    public void save(String resourceName, String domainName) {
+    public void save(String resourceName, String listenerName, String domainName, String parentRefName) {
         HTTPRoute httpRoute = new HTTPRouteBuilder()
                 .withNewMetadata()
                 .withName(resourceName)
@@ -26,7 +26,8 @@ public class HttpRouteRepository {
                 .endMetadata()
                 .withNewSpec()
                 .addNewParentRef()
-                .withName("gateway")
+                .withName(parentRefName)
+                .withSectionName(listenerName)
                 .withNamespace("default")
                 .endParentRef()
                 .addToHostnames(domainName)
@@ -50,15 +51,14 @@ public class HttpRouteRepository {
     }
 
     public List<String> getRoutes() {
-        List<GenericKubernetesResource> httpRoutes = client
-                .genericKubernetesResources("gateway.networking.k8s.io/v1", "HTTPRoute")
+        List<HTTPRoute> httpRoutes = this.client.resources(HTTPRoute.class)
                 .inNamespace("default")
                 .list()
                 .getItems();
         log.info("http routes: {}", httpRoutes);
 
         return httpRoutes.stream()
-                .map(GenericKubernetesResource::getMetadata)
+                .map(HTTPRoute::getMetadata)
                 .map(ObjectMeta::getName)
                 .toList();
     }

@@ -16,7 +16,7 @@ public class RoutingController {
 
     @PostMapping
     public void createRoute(@RequestBody CreateHttpRouteRequest request) {
-        httpRouteRepository.save(request.resourceName(), request.domainName());
+        httpRouteRepository.save(request.resourceName(), "http", request.domainName(), request.parentRefName());
     }
 
     @GetMapping
