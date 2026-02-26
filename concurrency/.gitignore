@@ -1,0 +1,6 @@
+node_modules
+dist
+.tool-versions
+## python 가상 환경
+venv
+__pycache__
