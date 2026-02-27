@@ -1,0 +1,80 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6382:6379'
+    networks:
+      - local
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping | grep PONG']
+      interval: 1s
+      timeout: 3s
+      retries: 3
+
+  producer:
+    build:
+      context: ./producer
+      dockerfile: Dockerfile
+    ports:
+      - '4000:4000'
+    networks:
+      - local
+    depends_on:
+      - redis
+
+  consumer:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile
+    networks:
+      - local
+    depends_on:
+      - redis
+      - producer
+
+  bullmq-exporter:
+    build:
+      context: ./exporter
+      dockerfile: Dockerfile
+    ports:
+      - '4001:4001'
+    networks:
+      - local
+    depends_on:
+      - redis
+      - producer
+      - consumer
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    networks:
+      - local
+    depends_on:
+      - bullmq-exporter
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - prometheus
+    networks:
+      - local
+
+volumes:
+  grafana-storage:
+
+networks:
+  local:
+    driver: bridge
