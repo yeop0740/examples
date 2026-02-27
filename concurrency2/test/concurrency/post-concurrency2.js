@@ -22,7 +22,7 @@ export default function () {
       },
     },
   );
-  console.log(res);
+  // console.log(res);
 
   check(res, {
     'is status 201': (r) => r.status === 201,

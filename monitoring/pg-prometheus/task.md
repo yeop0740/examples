@@ -1,0 +1,14 @@
+- [x] Analyze configuration files <!-- id: 0 -->
+- [x] Create implementation plan <!-- id: 1 -->
+- [x] Update prometheus.yml <!-- id: 2 -->
+- [x] Research Lima/Containerd networking <!-- id: 3 -->
+- [x] Update implementation plan for Lima <!-- id: 4 -->
+- [x] Update prometheus.yml for Lima <!-- id: 5 -->
+- [x] Refine documentation (Plan & Walkthrough) <!-- id: 6 -->
+- [x] Debug connection issue <!-- id: 7 -->
+- [x] Verify bridge network configuration <!-- id: 8 -->
+- [x] Fix database connection string <!-- id: 9 -->
+- [x] Create Learning Log (Korean & English) <!-- id: 10 -->
+- [x] Investigate Network Root Cause (MTU/Packet Loss) <!-- id: 11 -->
+- [x] Add Grafana & Fix Image Pull Error <!-- id: 12 -->
+- [x] Customize Grafana Dashboard <!-- id: 13 -->
