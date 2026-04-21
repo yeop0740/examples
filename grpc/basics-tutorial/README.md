@@ -100,10 +100,8 @@ message Point {
 ```
 
 ## Generating client and server code 
-다음 단계로, .proto 에 정의한 서비스 정의(service definition)로부터
-gRPC 클라이언트와 서버 인터페이스를 생성해야 합니다.
-이 작업은 protocol buffer compiler인 protoc 와
-특수한 gRPC Java plugin 을 사용하여 수행합니다.
+다음 단계로, .proto 에 정의한 서비스 정의(service definition)로부터 gRPC 클라이언트와 서버 인터페이스를 생성해야 합니다.
+이 작업은 protocol buffer compiler인 protoc 와 특수한 gRPC Java plugin 을 사용하여 수행합니다.
 gRPC 서비스를 생성하려면 반드시 proto3 compiler 를 사용해야 한다는 것입니다(proto3 compiler는 proto2,proto3 syntax 둘 다 지원합니다).
 
 Gradle이나 Maven을 사용할 경우, protoc build plugin 이 빌드 과정의 일부로 필요한 코드를 자동 생성할 수 있습니다.
@@ -398,8 +396,7 @@ try {
 }
 ```
 
-요청용 protocol buffer 객체(이 예제에서는 Point)를 생성하고 필요한 값을 채운 뒤, 이를 blocking stub의 getFeature() 메서드에 전달하면,
-결과로 Feature 를 반환받습니다.
+요청용 protocol buffer 객체(이 예제에서는 Point)를 생성하고 필요한 값을 채운 뒤, 이를 blocking stub의 getFeature() 메서드에 전달하면, 결과로 Feature 를 반환받습니다.
 
 그리고 오류가 발생하면, 오류는 Status 형태로 인코딩되어 전달됩니다. 이때 Java에서는 StatusRuntimeException 으로 받을 수 있으며, 그 안에서 Status 를 꺼낼 수 있습니다.
 
@@ -424,7 +421,142 @@ try {
 다만, 하나의 Feature 를 반환하는 대신, 클라이언트가 반환된 모든 Feature 를 읽을 수 있도록 Iterator 를 반환한다는 점이 다릅니다.
 
 #### Client-side streaming RPC 
+이제 조금 더 복잡한 것을 살펴보겠습니다.
+클라이언트 측 스트리밍 메서드인 RecordRoute 입니다.
+
+이 메서드에서는 Point 들의 stream을 서버로 보내고, 그 결과로 하나의 RouteSummary 를 반환받습니다.
+이 메서드에서는 비동기 stub(asynchronous stub) 을 사용해야 합니다.
+만약 이미 Creating the server 섹션을 읽었다면, 여기 내용 중 일부는 매우 익숙하게 느껴질 수 있습니다.
+왜냐하면 비동기 스트리밍 RPC는 클라이언트와 서버 양쪽에서 비슷한 방식으로 구현되기 때문입니다.
+
+```java
+public void recordRoute(List<Feature> features, int numPoints) throws InterruptedException {
+  info("*** RecordRoute");
+  final CountDownLatch finishLatch = new CountDownLatch(1);
+  StreamObserver<RouteSummary> responseObserver = new StreamObserver<RouteSummary>() {
+    @Override
+    public void onNext(RouteSummary summary) {
+      info("Finished trip with {0} points. Passed {1} features. "
+          + "Travelled {2} meters. It took {3} seconds.", summary.getPointCount(),
+          summary.getFeatureCount(), summary.getDistance(), summary.getElapsedTime());
+    }
+
+    @Override
+    public void onError(Throwable t) {
+      Status status = Status.fromThrowable(t);
+      logger.log(Level.WARNING, "RecordRoute Failed: {0}", status);
+      finishLatch.countDown();
+    }
+
+    @Override
+    public void onCompleted() {
+      info("Finished RecordRoute");
+      finishLatch.countDown();
+    }
+  };
+
+  StreamObserver<Point> requestObserver = asyncStub.recordRoute(responseObserver);
+  try {
+    // Send numPoints points randomly selected from the features list.
+    Random rand = new Random();
+    for (int i = 0; i < numPoints; ++i) {
+      int index = rand.nextInt(features.size());
+      Point point = features.get(index).getLocation();
+      info("Visiting point {0}, {1}", RouteGuideUtil.getLatitude(point),
+          RouteGuideUtil.getLongitude(point));
+      requestObserver.onNext(point);
+      // Sleep for a bit before sending the next one.
+      Thread.sleep(rand.nextInt(1000) + 500);
+      if (finishLatch.getCount() == 0) {
+        // RPC completed or errored before we finished sending.
+        // Sending further requests won't error, but they will just be thrown away.
+        return;
+      }
+    }
+  } catch (RuntimeException e) {
+    // Cancel RPC
+    requestObserver.onError(e);
+    throw e;
+  }
+  // Mark the end of requests
+  requestObserver.onCompleted();
+
+  // Receiving happens asynchronously
+  finishLatch.await(1, TimeUnit.MINUTES);
+}
+```
+
+보시는 것처럼, 이 메서드를 호출하려면 먼저 StreamObserver 를 생성해야 합니다.
+이 StreamObserver 는 서버가 RouteSummary 응답을 전달할 때 호출할 수 있도록 하는 특별한 인터페이스를 구현합니다.
+그리고 이 StreamObserver 안에서 다음을 수행합니다.
+- `onNext()` 메서드를 오버라이드하여,
+서버가 메시지 스트림에 RouteSummary 를 쓸 때 반환된 정보를 출력합니다.
+- `onCompleted()` 메서드를 오버라이드하여(서버가 자신의 쪽에서 호출을 완료했을 때 호출됨)
+  서버가 쓰기를 끝냈는지 확인할 수 있도록 CountDownLatch 를 감소시킵니다.
+
+그 다음, 생성한 StreamObserver 를 비동기 stub의 recordRoute() 메서드에 전달하고, 서버로 보낼 Point 들을 작성(write)하기 위한 우리 자신의 StreamObserver request observer 를 반환받습니다.
+모든 point 전송이 끝나면, 클라이언트 측 쓰기가 끝났음을 gRPC에 알리기 위해 request observer의 `onCompleted()` 를 호출합니다.
+그 후에는 서버 측 처리 완료 여부를 확인하기 위해 CountDownLatch 를 검사합니다.
 
 #### Bidirectional streaming RPC 
 
+마지막으로, 양방향 스트리밍 RPC인 RouteChat() 을 살펴보겠습니다.
+
+```java
+public void routeChat() throws Exception {
+  info("*** RoutChat");
+  final CountDownLatch finishLatch = new CountDownLatch(1);
+  StreamObserver<RouteNote> requestObserver =
+      asyncStub.routeChat(new StreamObserver<RouteNote>() {
+        @Override
+        public void onNext(RouteNote note) {
+          info("Got message \"{0}\" at {1}, {2}", note.getMessage(), note.getLocation()
+              .getLatitude(), note.getLocation().getLongitude());
+        }
+
+        @Override
+        public void onError(Throwable t) {
+          Status status = Status.fromThrowable(t);
+          logger.log(Level.WARNING, "RouteChat Failed: {0}", status);
+          finishLatch.countDown();
+        }
+
+        @Override
+        public void onCompleted() {
+          info("Finished RouteChat");
+          finishLatch.countDown();
+        }
+      });
+
+  try {
+    RouteNote[] requests =
+        {newNote("First message", 0, 0), newNote("Second message", 0, 1),
+            newNote("Third message", 1, 0), newNote("Fourth message", 1, 1)};
+
+    for (RouteNote request : requests) {
+      info("Sending message \"{0}\" at {1}, {2}", request.getMessage(), request.getLocation()
+          .getLatitude(), request.getLocation().getLongitude());
+      requestObserver.onNext(request);
+    }
+  } catch (RuntimeException e) {
+    // Cancel RPC
+    requestObserver.onError(e);
+    throw e;
+  }
+  // Mark the end of requests
+  requestObserver.onCompleted();
+
+  // Receiving happens asynchronously
+  finishLatch.await(1, TimeUnit.MINUTES);
+}
+```
+
+클라이언트 측 스트리밍 예제와 마찬가지로, 이번에도 StreamObserver 응답 observer를 전달받고, 동시에 StreamObserver 를 반환합니다.
+다만 이번에는, 서버가 자신의 메시지 스트림에 계속 메시지를 쓰고 있는 동안에도 우리 메서드의 response observer를 통해 값을 보냅니다.
+
+여기서 읽기(read)와 쓰기(write)의 문법은 클라이언트 스트리밍 메서드와 완전히 동일합니다.
+
+또한 각 측은 상대방이 보낸 메시지를 작성된 순서대로 항상 받게 되지만, 클라이언트와 서버는 원하는 순서대로 읽고 쓸 수 있습니다.
+
 ## Try it out! 
+클라이언트와 서버를 빌드하고 실행하려면, 예제 디렉터리의 README에 있는 안내를 따르십시오.
